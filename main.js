@@ -1,9 +1,8 @@
-const Discord = require('discord.js');
-// import Discord from 'discord.js';
+import { Client } from 'discord.js';
+import dotenv from 'dotenv';
 
-require('dotenv').config();
-
-const client = new Discord.Client();
+dotenv.config();
+const client = new Client();
 
 client.once('ready', () => {
   console.log('Aloe is online!');

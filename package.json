@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Discord bot to play cards and do discord commands",
   "main": "main.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
