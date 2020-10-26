@@ -1,0 +1,29 @@
+{
+  "name": "aloebot",
+  "version": "1.0.0",
+  "description": "Discord bot to play cards and do discord commands",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lily-f/AloeBot.git"
+  },
+  "author": "Lily Fahey",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Lily-f/AloeBot/issues"
+  },
+  "homepage": "https://github.com/Lily-f/AloeBot#readme",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.12.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsdoc": "^30.7.3"
+  }
+}
