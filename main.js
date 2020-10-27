@@ -8,7 +8,7 @@ const aloePrefix = '^';
 
 // Responce to successful login once
 aloeBot.once('ready', () => {
-  console.log('Aloe online!');
+  console.log('Aloe ready!');
 });
 
 // Respond to messages
@@ -31,6 +31,13 @@ aloeBot.on('message', (message) => {
   } else if (message.content === `${aloePrefix}my-info`) {
     message.channel.send(`Your username: ${message.author.username}\n
       Your ID: ${message.author.id}`);
+  } else if (command === 'avatar') {
+    if (!message.mentions.users.size) {
+      message.channel.send(`Your avatar: ${message.author.displayAvatarURL({ format: 'png', dynamic: true })}`);
+    } else {
+      const avatarList = message.mentions.users.map((user) => `${user.username}'s avatar: ${user.displayAvatarURL({ format: 'png', dynamic: true })}`);
+      message.channel.send(avatarList);
+    }
   }
 });
 
