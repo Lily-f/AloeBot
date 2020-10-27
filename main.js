@@ -9,14 +9,26 @@ const aloePrefix = '^';
 // Responce to successful login once
 aloeBot.once('ready', () => {
   console.log('Aloe online!');
-  console.log(aloeBot.user.id);
 });
 
 // Respond to messages
 aloeBot.on('message', (message) => {
-  // Only respond with the right prefix
-  if (!message.content.startsWith(aloePrefix)) return;
-  message.channel.send(message.content.substring(1, message.content.length));
+  // Echo command
+  if (message.content.split(' ')[0] === `${aloePrefix}echo`) {
+    message.channel.send(message.content.substring(6, message.content.length));
+  }
+
+  // Server stats command
+  if (message.content === `${aloePrefix}serverstats`) {
+    let botCount = 0;
+
+    message.channel.members.forEach((guildMember, guildMemberId) => {
+      if (guildMember.user.bot) { botCount += 1; }
+      console.log(guildMemberId, guildMember.user);
+    });
+
+    message.channel.send(`${message.guild.name} has ${Math.max(0, message.guild.memberCount - botCount)} people and ${botCount} bots \nAloeBot joined: ${message.guild.joinedAt.toDateString()}`);
+  }
 });
 
 // Login the bot to discord. MUST BE LAST LINE
