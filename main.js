@@ -20,13 +20,10 @@ aloeBot.on('message', (message) => {
 
   // Server stats command
   if (message.content === `${aloePrefix}serverstats`) {
-    let botCount = 0;
-
-    message.channel.members.forEach((guildMember, guildMemberId) => {
-      if (guildMember.user.bot) { botCount += 1; }
-      console.log(guildMemberId, guildMember.user);
-    });
-
+    // Find number of bots in server
+    const botCount = message.channel.members.reduce(
+      (count, member) => (member.user.bot ? count + 1 : count), 0,
+    );
     message.channel.send(`${message.guild.name} has ${Math.max(0, message.guild.memberCount - botCount)} people and ${botCount} bots \nAloeBot joined: ${message.guild.joinedAt.toDateString()}`);
   }
 });
