@@ -16,18 +16,8 @@ aloeBot.on('message', (message) => {
   // Echo command
   if (message.content.split(' ')[0] === `${aloePrefix}echo`) {
     message.channel.send(message.content.substring(6, message.content.length));
-  }
-
-  // Server stats command
-  if (message.content === `${aloePrefix}serverstats`) {
-    let botCount = 0;
-
-    message.channel.members.forEach((guildMember, guildMemberId) => {
-      if (guildMember.user.bot) { botCount += 1; }
-      console.log(guildMemberId, guildMember.user);
-    });
-
-    message.channel.send(`${message.guild.name} has ${Math.max(0, message.guild.memberCount - botCount)} people and ${botCount} bots \nAloeBot joined: ${message.guild.joinedAt.toDateString()}`);
+  } else if (message.content === `${aloePrefix}ping`) {
+    message.channel.send('pong');
   }
 });
 
