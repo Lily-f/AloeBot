@@ -1,4 +1,4 @@
-module.exports = {
+const userInfo = {
   name: 'ping',
   description: 'Ping!',
   execute(message, args) {
@@ -6,3 +6,4 @@ module.exports = {
         Your ID: ${message.author.id}`);
   },
 };
+export default userInfo;

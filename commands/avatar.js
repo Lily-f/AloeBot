@@ -1,4 +1,4 @@
-module.exports = {
+const avatar = {
   name: 'ping',
   description: 'Ping!',
   execute(message, args) {
@@ -10,3 +10,4 @@ module.exports = {
     }
   },
 };
+export default avatar;

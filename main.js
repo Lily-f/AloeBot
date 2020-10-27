@@ -1,9 +1,15 @@
-import { Client } from 'discord.js';
+import { Client, Collection } from 'discord.js';
 import dotenv from 'dotenv';
+import loadCommands from './commands/load-commands.js';
 
 // Add .env variables to the process. Used to obtain tokens
 dotenv.config();
+
+// Create Discord client (AloeBot) and load commandfiles
 const aloeBot = new Client();
+aloeBot.commands = new Collection();
+const commands = loadCommands();
+console.log(commands);
 const aloePrefix = '^';
 
 // Responce to successful login once
