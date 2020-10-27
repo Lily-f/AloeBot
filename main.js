@@ -13,11 +13,24 @@ aloeBot.once('ready', () => {
 
 // Respond to messages
 aloeBot.on('message', (message) => {
+  if (!message.content.startsWith(aloePrefix) || message.author.bot) return;
+
+  const args = message.content.slice(aloePrefix.length).trim().split(/ +/);
+  const command = args.shift().toLowerCase();
+
   // Echo command
-  if (message.content.split(' ')[0] === `${aloePrefix}echo`) {
-    message.channel.send(message.content.substring(6, message.content.length));
+  if (command === 'echo') {
+    if (args.toString().length > 0) {
+      message.channel.send(args.toString());
+    }
   } else if (message.content === `${aloePrefix}ping`) {
     message.channel.send('pong');
+  } else if (message.content === `${aloePrefix}server`) {
+    message.channel.send(`This server is called ${message.guild.name}\n
+      Total members: ${message.guild.memberCount}`);
+  } else if (message.content === `${aloePrefix}my-info`) {
+    message.channel.send(`Your username: ${message.author.username}\n
+      Your ID: ${message.author.id}`);
   }
 });
 
