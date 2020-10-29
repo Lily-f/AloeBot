@@ -1,5 +1,6 @@
 const ping = {
   name: 'ping',
+  aliases: [],
   description: 'Ping!',
   hasArgs: false,
   usage: '',

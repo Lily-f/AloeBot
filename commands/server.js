@@ -1,5 +1,6 @@
 const server = {
   name: 'server',
+  aliases: [],
   description: 'See Discord server info',
   hasArgs: false,
   usage: '',

@@ -26,8 +26,9 @@ aloeBot.on('message', (message) => {
   const commandName = args.shift().toLowerCase();
 
   // Check command exists
-  if (!aloeBot.commands.has(commandName)) return;
-  const command = aloeBot.commands.get(commandName);
+  const command = aloeBot.commands.get(commandName)
+   || aloeBot.commands.find((cmd) => cmd.aliases.includes(commandName));
+  if (!command) return;
 
   // Check if command is guild only that message is in a guild
   if (command.guildOnly && message.channel.type === 'dm') {

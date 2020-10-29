@@ -1,5 +1,6 @@
 const avatar = {
   name: 'avatar',
+  aliases: ['icon', 'pfp'],
   description: 'See @\'d peoples avatars. ',
   hasArgs: false,
   usage: '',

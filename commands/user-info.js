@@ -1,5 +1,6 @@
 const userInfo = {
   name: 'user-info',
+  aliases: [],
   description: 'See your Discord info',
   hasArgs: false,
   usage: '',
