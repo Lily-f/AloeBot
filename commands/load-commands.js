@@ -2,6 +2,7 @@ import userInfo from './user-info.js';
 import ping from './ping.js';
 import server from './server.js';
 import avatar from './avatar.js';
+import help from './help.js';
 
 /**
  * Loads commands from
@@ -14,5 +15,6 @@ export default function loadCommands() {
   commands.push(userInfo);
   commands.push(ping);
   commands.push(server);
+  commands.push(help);
   return commands;
 }
