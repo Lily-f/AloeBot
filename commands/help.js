@@ -28,7 +28,7 @@ const help = {
           // TODO: remove logging
           // eslint-disable-next-line no-console
           console.error(`Could not send help DM to ${message.author.tag}.\n`, error);
-          message.reply('it seems like I can\'t DM the commands to you! Do you have DMs disabled?');
+          message.reply('it seems like I can\'t DM the commands to you! Do you have DMs disabled?', error);
         });
       return;
     }

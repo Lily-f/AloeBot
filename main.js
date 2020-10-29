@@ -1,4 +1,4 @@
-import { Client, Collection } from 'discord.js';
+import { Client, Collection, Message } from 'discord.js';
 import dotenv from 'dotenv';
 import loadCommands from './commands/load-commands.js';
 import config from './config.js';
@@ -22,7 +22,64 @@ aloeBot.once('ready', () => {
   aloeBot.user.setActivity('paint dry', { type: 'WATCHING' });
 });
 
-// Respond to messages
+/**
+ * Check if a command was used with the correct arguments
+ * If command used without required args, give example usage
+ *
+ * @param {object} command command invoked by the user
+ * @param {Message} message message user sent
+ * @param {string[]} args arguments in users message
+ * @returns {boolean} were argument requirements meet
+ */
+const checkCommandArgs = (command, message, args) => {
+  if (command.requiresArgs && !args.length) {
+    let reply = `You didn't provide any arguments, ${message.author}!`;
+
+    if (command.usage) {
+      reply += `\nThe proper usage would be: '${config.prefix}${command.name} ${command.usage}'`;
+    }
+    message.channel.send(reply);
+    return true;
+  }
+  return false;
+};
+
+/**
+ * Check if the command invoked is still in cooldown
+ * Starts command cooldown if it has one
+ * Message user if still in cooldown
+ *
+ * @param {Message} message message user sent
+ * @param {object} command command invoked by user
+ * @returns {boolean} is command still in cooldown
+ */
+const handleCommandCooldown = (message, command) => {
+  if (!cooldowns.has(command.name)) {
+    cooldowns.set(command.name, new Collection());
+  }
+
+  // If user has used command, check if cooldown has expired
+  const now = Date.now();
+  const timestamps = cooldowns.get(command.name);
+  const cooldownAmount = (command.cooldown || 3) * 1000;
+  if (timestamps.has(message.author.id)) {
+    const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+    // Alert user if cooldown is not over
+    if (now < expirationTime) {
+      const timeLeft = (expirationTime - now) / 1000;
+      message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+      return true;
+    }
+  }
+
+  // Set cooldown for command
+  timestamps.set(message.author.id, now);
+  setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+  return false;
+};
+
+// Subscribe and respond to messages
 aloeBot.on('message', (message) => {
   if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 
@@ -42,39 +99,10 @@ aloeBot.on('message', (message) => {
   }
 
   // Check that if command requires arguments, they are provided
-  if (command.requiresArgs && !args.length) {
-    let reply = `You didn't provide any arguments, ${message.author}!`;
-
-    if (command.usage) {
-      reply += `\nThe proper usage would be: '${config.prefix}${commandName} ${command.usage}'`;
-    }
-    message.channel.send(reply);
-    return;
-  }
+  if (checkCommandArgs(command, message, args)) return;
 
   // Check command has a cooldown
-  if (!cooldowns.has(command.name)) {
-    cooldowns.set(command.name, new Collection());
-  }
-
-  // If user has used command, check if cooldown has expired
-  const now = Date.now();
-  const timestamps = cooldowns.get(command.name);
-  const cooldownAmount = (command.cooldown || 3) * 1000;
-  if (timestamps.has(message.author.id)) {
-    const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
-    // Alert user if cooldown is not over
-    if (now < expirationTime) {
-      const timeLeft = (expirationTime - now) / 1000;
-      message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
-      return;
-    }
-  }
-
-  // Set cooldown for command
-  timestamps.set(message.author.id, now);
-  setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+  if (handleCommandCooldown(message, command)) return;
 
   try {
     command.execute(message, args);
