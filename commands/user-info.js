@@ -1,6 +1,9 @@
 const userInfo = {
   name: 'user-info',
   description: 'See your Discord info',
+  hasArgs: false,
+  usage: '',
+  guildOnly: false,
   execute(message, args) {
     message.channel.send(`Your username: ${message.author.username}\n
         Your ID: ${message.author.id}`);

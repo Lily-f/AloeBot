@@ -20,14 +20,33 @@ aloeBot.once('ready', () => {
 aloeBot.on('message', (message) => {
   if (!message.content.startsWith(aloePrefix) || message.author.bot) return;
 
-  // Get command and args from user
+  // Get command name and args from user
   const args = message.content.slice(aloePrefix.length).trim().split(/ +/);
-  const command = args.shift().toLowerCase();
+  const commandName = args.shift().toLowerCase();
 
-  // If the command is valid, try execute it. Reply with errors on exceptions
-  if (!aloeBot.commands.has(command)) return;
+  // Check command exists
+  if (!aloeBot.commands.has(commandName)) return;
+  const command = aloeBot.commands.get(commandName);
+
+  // Check if command is guild only that message is in a guild
+  if (command.guildOnly && message.channel.type === 'dm') {
+    message.reply('I can\'t execute that command inside DMs!');
+    return;
+  }
+
+  // Check that if command requires arguments, they are provided
+  if (command.hasArgs && !args.length) {
+    let reply = `You didn't provide any arguments, ${message.author}!`;
+
+    if (command.usage) {
+      reply += `\nThe proper usage would be: '${aloePrefix}${commandName} ${command.usage}'`;
+    }
+    message.channel.send(reply);
+    return;
+  }
+
   try {
-    aloeBot.commands.get(command).execute(message, args);
+    command.execute(message, args);
   } catch (error) {
     console.error(error);
     message.reply('there was an error trying to execute that command!');
