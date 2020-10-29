@@ -2,11 +2,11 @@ const avatar = {
   name: 'avatar',
   aliases: ['icon', 'pfp'],
   description: 'See @\'d peoples avatars. ',
-  hasArgs: false,
+  requiresArgs: false,
   usage: '',
   guildOnly: false,
   cooldown: 0,
-  execute(message, args) {
+  execute(message) {
     if (!message.mentions.users.size) {
       message.channel.send(`Your avatar: ${message.author.displayAvatarURL({ format: 'png', dynamic: true })}`);
     } else {

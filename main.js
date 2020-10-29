@@ -1,6 +1,7 @@
 import { Client, Collection } from 'discord.js';
 import dotenv from 'dotenv';
 import loadCommands from './commands/load-commands.js';
+import config from './config.js';
 
 // Add .env variables to the process. Used to obtain tokens
 dotenv.config();
@@ -8,7 +9,7 @@ dotenv.config();
 // Create Discord client (AloeBot) and run setup
 const aloeBot = new Client();
 aloeBot.commands = new Collection();
-const aloePrefix = '^';
+// const prefix = '^';
 loadCommands().forEach((command) => { aloeBot.commands.set(command.name, command); });
 const cooldowns = new Collection();
 
@@ -19,10 +20,10 @@ aloeBot.once('ready', () => {
 
 // Respond to messages
 aloeBot.on('message', (message) => {
-  if (!message.content.startsWith(aloePrefix) || message.author.bot) return;
+  if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 
   // Get command name and args from user
-  const args = message.content.slice(aloePrefix.length).trim().split(/ +/);
+  const args = message.content.slice(config.prefix.length).trim().split(/ +/);
   const commandName = args.shift().toLowerCase();
 
   // Check command exists
@@ -37,11 +38,11 @@ aloeBot.on('message', (message) => {
   }
 
   // Check that if command requires arguments, they are provided
-  if (command.hasArgs && !args.length) {
+  if (command.requiresArgs && !args.length) {
     let reply = `You didn't provide any arguments, ${message.author}!`;
 
     if (command.usage) {
-      reply += `\nThe proper usage would be: '${aloePrefix}${commandName} ${command.usage}'`;
+      reply += `\nThe proper usage would be: '${config.prefix}${commandName} ${command.usage}'`;
     }
     message.channel.send(reply);
     return;
