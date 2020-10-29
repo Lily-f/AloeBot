@@ -5,11 +5,12 @@ import loadCommands from './commands/load-commands.js';
 // Add .env variables to the process. Used to obtain tokens
 dotenv.config();
 
-// Create Discord client (AloeBot) and load command files
+// Create Discord client (AloeBot) and run setup
 const aloeBot = new Client();
 aloeBot.commands = new Collection();
 const aloePrefix = '^';
 loadCommands().forEach((command) => { aloeBot.commands.set(command.name, command); });
+const cooldowns = new Collection();
 
 // Responce to successful login once
 aloeBot.once('ready', () => {
@@ -44,6 +45,30 @@ aloeBot.on('message', (message) => {
     message.channel.send(reply);
     return;
   }
+
+  // Check command has a cooldown
+  if (!cooldowns.has(command.name)) {
+    cooldowns.set(command.name, new Collection());
+  }
+
+  // If user has used command, check if cooldown has expired
+  const now = Date.now();
+  const timestamps = cooldowns.get(command.name);
+  const cooldownAmount = (command.cooldown || 3) * 1000;
+  if (timestamps.has(message.author.id)) {
+    const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+    // Alert user if cooldown is not over
+    if (now < expirationTime) {
+      const timeLeft = (expirationTime - now) / 1000;
+      message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+      return;
+    }
+  }
+
+  // Set cooldown for command
+  timestamps.set(message.author.id, now);
+  setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
   try {
     command.execute(message, args);

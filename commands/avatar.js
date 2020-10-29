@@ -4,6 +4,7 @@ const avatar = {
   hasArgs: false,
   usage: '',
   guildOnly: false,
+  cooldown: 0,
   execute(message, args) {
     if (!message.mentions.users.size) {
       message.channel.send(`Your avatar: ${message.author.displayAvatarURL({ format: 'png', dynamic: true })}`);
