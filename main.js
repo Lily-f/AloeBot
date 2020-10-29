@@ -15,7 +15,11 @@ const cooldowns = new Collection();
 
 // Responce to successful login once
 aloeBot.once('ready', () => {
+  // TODO: remove logging
+  // eslint-disable-next-line no-console
   console.log('Aloe ready!');
+  aloeBot.user.setStatus('online');
+  aloeBot.user.setActivity('paint dry', { type: 'WATCHING' });
 });
 
 // Respond to messages
@@ -75,6 +79,8 @@ aloeBot.on('message', (message) => {
   try {
     command.execute(message, args);
   } catch (error) {
+    // TODO: remove logging
+    // eslint-disable-next-line no-console
     console.error(error);
     message.reply('there was an error trying to execute that command!');
   }
