@@ -1,6 +1,6 @@
 const avatar = {
-  name: 'ping',
-  description: 'Ping!',
+  name: 'avatar',
+  description: 'See @\'d peoples avatars. ',
   execute(message, args) {
     if (!message.mentions.users.size) {
       message.channel.send(`Your avatar: ${message.author.displayAvatarURL({ format: 'png', dynamic: true })}`);

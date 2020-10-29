@@ -5,12 +5,11 @@ import loadCommands from './commands/load-commands.js';
 // Add .env variables to the process. Used to obtain tokens
 dotenv.config();
 
-// Create Discord client (AloeBot) and load commandfiles
+// Create Discord client (AloeBot) and load command files
 const aloeBot = new Client();
 aloeBot.commands = new Collection();
-const commands = loadCommands();
-console.log(commands);
 const aloePrefix = '^';
+loadCommands().forEach((command) => { aloeBot.commands.set(command.name, command); });
 
 // Responce to successful login once
 aloeBot.once('ready', () => {
