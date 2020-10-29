@@ -20,29 +20,17 @@ aloeBot.once('ready', () => {
 aloeBot.on('message', (message) => {
   if (!message.content.startsWith(aloePrefix) || message.author.bot) return;
 
+  // Get command and args from user
   const args = message.content.slice(aloePrefix.length).trim().split(/ +/);
   const command = args.shift().toLowerCase();
 
-  // Echo command
-  if (command === 'echo') {
-    if (args.toString().length > 0) {
-      message.channel.send(args.toString());
-    }
-  } else if (message.content === `${aloePrefix}ping`) {
-    message.channel.send('pong');
-  } else if (message.content === `${aloePrefix}server`) {
-    message.channel.send(`This server is called ${message.guild.name}\n
-      Total members: ${message.guild.memberCount}`);
-  } else if (message.content === `${aloePrefix}my-info`) {
-    message.channel.send(`Your username: ${message.author.username}\n
-      Your ID: ${message.author.id}`);
-  } else if (command === 'avatar') {
-    if (!message.mentions.users.size) {
-      message.channel.send(`Your avatar: ${message.author.displayAvatarURL({ format: 'png', dynamic: true })}`);
-    } else {
-      const avatarList = message.mentions.users.map((user) => `${user.username}'s avatar: ${user.displayAvatarURL({ format: 'png', dynamic: true })}`);
-      message.channel.send(avatarList);
-    }
+  // If the command is valid, try execute it. Reply with errors on exceptions
+  if (!aloeBot.commands.has(command)) return;
+  try {
+    aloeBot.commands.get(command).execute(message, args);
+  } catch (error) {
+    console.error(error);
+    message.reply('there was an error trying to execute that command!');
   }
 });
 
