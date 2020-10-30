@@ -14,24 +14,20 @@ const poll = {
    * @param {Message} message  user invocation message
    */
   execute(message) {
-    // Find number of quotes used in message, to determine the topic of poll
+    // Find topic, determined by two quotes in the mesasge
     const matches = message.content.match(/"/g);
     const quotesNumber = matches ? matches.length : 0;
-
-    // If there are not exactly 2 quotes, send command malformed error
-    if (quotesNumber !== 2) message.reply('Poll topic command requires exactly 2 double quote marks!');
+    if (quotesNumber < 2) message.reply('Poll topic command requires at least 2 double quote marks!');
 
     // Get topic from message and all args beyond topic
-    const topic = /"(.*?)"/g.exec(message.content).pop();
-    message.channel.send(`topic: ${topic}`);
+    const topic = message.content.substring(message.content.indexOf('"') + 1, message.content.lastIndexOf('"'));
+    const messageAfterTopic = message.content.substring(message.content.lastIndexOf('"') + 1);
+    const args = messageAfterTopic.trim().split(/ +/);
 
-    // Topic is the message from the start till the first comma
-    // const topic = message.content.match(/'([^']+)'/)[1];
-    // const topic = args[0];
-    // const timeout = args[1];
-    // const forceEndReact = args[2];
-    // const reactOptions = args.slice(3, args.length);
-    // message.channel.send(`making a poll! ${topic}`);
+    const timeout = parseInt(args[0], 10);
+    const forceEndReact = args[1];
+    const reactOptions = args.slice(2, args.length);
+    message.channel.send(`making a poll! topic:'${topic}', timeout:'${timeout}', endReact:'${forceEndReact}, reactOptions:'${reactOptions}'`);
   },
 };
 export default poll;
