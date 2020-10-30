@@ -3,9 +3,10 @@ import ping from './ping.js';
 import server from './server.js';
 import avatar from './avatar.js';
 import help from './help.js';
+import poll from './poll.js';
 
 /**
- * Loads commands from
+ * Loads commands from thier respective files
  *
  * @returns {object} array of command objects
  */
@@ -16,5 +17,6 @@ export default function loadCommands() {
   commands.push(ping);
   commands.push(server);
   commands.push(help);
+  commands.push(poll);
   return commands;
 }

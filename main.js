@@ -9,7 +9,6 @@ dotenv.config();
 // Create Discord client (AloeBot) and run setup
 const aloeBot = new Client();
 aloeBot.commands = new Collection();
-// const prefix = '^';
 loadCommands().forEach((command) => { aloeBot.commands.set(command.name, command); });
 const cooldowns = new Collection();
 

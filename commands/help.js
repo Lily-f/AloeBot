@@ -1,3 +1,4 @@
+import { Message } from 'discord.js';
 import config from '../config.js';
 
 const help = {
@@ -8,6 +9,12 @@ const help = {
   usage: '[command name]',
   guildOnly: false,
   cooldown: 5,
+  /**
+   * Help command. DM the user a list of commands or specifics on a given one
+   *
+   * @param {Message} message user invocation message
+   * @param {string[]} args Arguments to command
+   */
   execute(message, args) {
     const response = [];
     const { commands } = message.client;
