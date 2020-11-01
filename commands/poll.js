@@ -1,11 +1,12 @@
-import { Message } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
+import config from '../config.js';
 
 const poll = {
   name: 'poll',
   aliases: [],
   description: 'Create a poll',
   requiresArgs: true,
-  usage: '',
+  usage: '"Topic name/description" [Poll time (seconds)] option1 option2 option3...',
   guildOnly: true,
   cooldown: 5,
   /**
@@ -26,16 +27,33 @@ const poll = {
     // Get and check arguments for the command
     const messageAfterTopic = message.content.substring(message.content.lastIndexOf('"') + 1);
     const args = messageAfterTopic.trim().split(/ +/);
-
     const timeout = parseInt(args[0], 10);
     if (Number.isNaN(timeout) || timeout <= 0) {
       message.reply('Timeout needs to be a number greater than 0!');
       return;
     }
     const options = args.slice(1, args.length);
+    if (options.length < 2 || options.length > 20) {
+      message.reply('Poll must have between 2 and 20 options!');
+      return;
+    }
+
+    // Create string representing options
+    let optionsString = '';
+    const possibleEmoji = Object.keys(config.unicodeEmoji).map(
+      (emoji) => config.unicodeEmoji[emoji],
+    );
+    for (let i = 0; i < options.length; i += 1) {
+      optionsString += `${possibleEmoji[i]}: ${options[i]}\n\n`;
+    }
 
     // Create embed representing the poll
-    message.channel.send(`making a poll! topic:'${topic}', timeout:'${timeout}', options:'${options}'`);
+    const pollEmbed = new MessageEmbed()
+      .setColor(config.color)
+      .setTitle(`Poll - ${topic}`)
+      .setDescription(`To vote, react using the corresponding emoji. Voting ends in ${timeout} seconds!\n${optionsString}`)
+      .setFooter(`Poll created by ${message.author.username}`);
+    message.channel.send(pollEmbed);
   },
 };
 export default poll;
