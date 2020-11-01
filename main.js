@@ -18,7 +18,7 @@ aloeBot.once('ready', () => {
   // eslint-disable-next-line no-console
   console.log('Aloe ready!');
   aloeBot.user.setStatus('online');
-  aloeBot.user.setActivity('paint dry', { type: 'WATCHING' });
+  aloeBot.user.setActivity(`${config.prefix}help`, { type: 'WATCHING' });
 });
 
 /**

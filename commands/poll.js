@@ -32,10 +32,10 @@ const poll = {
       message.reply('Timeout needs to be a number greater than 0!');
       return;
     }
-    const unicodeEmogiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/;
-    const forceEndReact = args[1];
-    const reactOptions = args.slice(2, args.length);
-    message.channel.send(`making a poll! topic:'${topic}', timeout:'${timeout}', endReact:'${forceEndReact}', reactOptions:'${reactOptions}'`);
+    const options = args.slice(1, args.length);
+
+    // Create embed representing the poll
+    message.channel.send(`making a poll! topic:'${topic}', timeout:'${timeout}', options:'${options}'`);
   },
 };
 export default poll;
