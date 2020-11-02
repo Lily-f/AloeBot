@@ -6,7 +6,7 @@ const poll = {
   aliases: [],
   description: 'Create a poll',
   requiresArgs: true,
-  usage: '"Topic name/description" [Poll time (seconds)] option1 option2 option3...',
+  usage: '"Topic name/description" [Poll time (minutes)] option1 option2 option3...',
   guildOnly: true,
   cooldown: 5,
   /**
@@ -27,7 +27,7 @@ const poll = {
     // Get and check arguments for the command
     const messageAfterTopic = message.content.substring(message.content.lastIndexOf('"') + 1);
     const args = messageAfterTopic.trim().split(/ +/);
-    const timeout = parseInt(args[0], 10);
+    const timeout = parseFloat(args[0], 10);
     if (Number.isNaN(timeout) || timeout <= 0) {
       message.reply('Timeout needs to be a number greater than 0!');
       return;
@@ -63,7 +63,7 @@ const poll = {
     usedEmoji.forEach((emoji) => { pollMessage.react(emoji); });
     const reactionCollector = pollMessage.createReactionCollector(
       (reaction, user) => usedEmoji.includes(reaction.emoji.name) && !user.bot,
-      { time: timeout * 1000 },
+      { time: timeout * 60000 },
     );
 
     // Update frequencies of new reacts
@@ -88,7 +88,7 @@ const poll = {
       const resultsEmbed = new MessageEmbed()
         .setColor(config.color)
         .setTitle(`Poll - ${topic} is Finished!`)
-        .setDescription(`${results}}`)
+        .setDescription(`${results}`)
         .setFooter(`Poll created by ${message.author.username}`);
       message.channel.send(resultsEmbed);
     });
