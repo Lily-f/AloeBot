@@ -14,7 +14,7 @@ const poll = {
    *
    * @param {Message} message  user invocation message
    */
-  execute(message) {
+  async execute(message) {
     // Find topic, determined by two quotes in the mesasge
     const matches = message.content.match(/"/g);
     const quotesNumber = matches ? matches.length : 0;
@@ -40,11 +40,15 @@ const poll = {
 
     // Create string representing options
     let optionsString = '';
+    const usedEmoji = [];
+    const optionFreq = {};
     const possibleEmoji = Object.keys(config.unicodeEmoji).map(
       (emoji) => config.unicodeEmoji[emoji],
     );
     for (let i = 0; i < options.length; i += 1) {
-      optionsString += `${possibleEmoji[i]}: ${options[i]}\n\n`;
+      optionsString += `${possibleEmoji[i]} : ${options[i]}\n\n`;
+      usedEmoji.push(possibleEmoji[i]);
+      optionFreq[possibleEmoji[i]] = { option: options[i], votes: 0 };
     }
 
     // Create embed representing the poll
@@ -53,7 +57,41 @@ const poll = {
       .setTitle(`Poll - ${topic}`)
       .setDescription(`To vote, react using the corresponding emoji. Voting ends in ${timeout} seconds!\n${optionsString}`)
       .setFooter(`Poll created by ${message.author.username}`);
-    message.channel.send(pollEmbed);
+
+    // Send Embed and add reaction collecter
+    const pollMessage = await message.channel.send(pollEmbed);
+    usedEmoji.forEach((emoji) => { pollMessage.react(emoji); });
+    const reactionCollector = pollMessage.createReactionCollector(
+      (reaction, user) => usedEmoji.includes(reaction.emoji.name) && !user.bot,
+      { time: timeout * 1000 },
+    );
+
+    // Update frequencies of new reacts
+    reactionCollector.on('collect', (reaction) => {
+      if (usedEmoji.includes(reaction.emoji.name)) {
+        optionFreq[reaction.emoji.name].votes += 1;
+      }
+    });
+
+    // Update frequency when reacts removed
+    reactionCollector.on('dispose', (reaction) => {
+      if (usedEmoji.includes(reaction.emoji.name)) {
+        optionFreq[reaction.emoji.name].votes -= 1;
+      }
+    });
+
+    // Display embed of results when timeout occurs
+    reactionCollector.on('end', () => {
+      pollMessage.delete();
+      let results = '';
+      Object.values(optionFreq).forEach((option) => { results += `${option.option} - ${option.votes}\n`; });
+      const resultsEmbed = new MessageEmbed()
+        .setColor(config.color)
+        .setTitle(`Poll - ${topic} is Finished!`)
+        .setDescription(`${results}}`)
+        .setFooter(`Poll created by ${message.author.username}`);
+      message.channel.send(resultsEmbed);
+    });
   },
 };
 export default poll;
