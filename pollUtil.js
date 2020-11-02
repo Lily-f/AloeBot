@@ -63,8 +63,8 @@ async function sendPollMessage(message, topic, usedEmoji, timeout, optionsString
 // Create embed representing the poll
   const pollEmbed = new MessageEmbed()
     .setColor(config.color)
-    .setTitle(`Straw Poll - ${topic}`)
-    .setDescription(`To vote, react using the corresponding emoji. You only get 1 vote. Voting ends in ${timeout} minutes!\n${optionsString}`)
+    .setTitle(`Poll - ${topic}`)
+    .setDescription(`To vote, react using the corresponding emoji. Voting ends in ${timeout} minutes!\n${optionsString}`)
     .setFooter(`Poll created by ${message.author.username}`);
 
   // Send Embed and add reaction collecter
