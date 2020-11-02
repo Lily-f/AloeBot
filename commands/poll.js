@@ -4,9 +4,9 @@ import config from '../config.js';
 const poll = {
   name: 'poll',
   aliases: [],
-  description: 'Create a poll',
+  description: 'Create a poll. Users have multiple votes',
   requiresArgs: true,
-  usage: '"Topic name/description" [Poll time (minutes)] option1 option2 option3...',
+  usage: '"Topic name/description" [Poll time (minutes)] option1 option2 option3...\n\t\t\t eg: ^poll "Best animal" 0.2 cats dogs sheep pigs mice',
   guildOnly: true,
   cooldown: 5,
   /**
@@ -55,7 +55,7 @@ const poll = {
     const pollEmbed = new MessageEmbed()
       .setColor(config.color)
       .setTitle(`Poll - ${topic}`)
-      .setDescription(`To vote, react using the corresponding emoji. Voting ends in ${timeout} seconds!\n${optionsString}`)
+      .setDescription(`To vote, react using the corresponding emoji. Voting ends in ${timeout} minutes!\n${optionsString}`)
       .setFooter(`Poll created by ${message.author.username}`);
 
     // Send Embed and add reaction collecter

@@ -4,6 +4,7 @@ import server from './server.js';
 import avatar from './avatar.js';
 import help from './help.js';
 import poll from './poll.js';
+import strawpoll from './strawpoll.js';
 
 /**
  * Loads commands from thier respective files
@@ -18,5 +19,6 @@ export default function loadCommands() {
   commands.push(server);
   commands.push(help);
   commands.push(poll);
+  commands.push(strawpoll);
   return commands;
 }
