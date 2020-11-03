@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+const Message = require('discord.js');
 
 const avatar = {
   name: 'avatar',
@@ -22,4 +22,4 @@ const avatar = {
     }
   },
 };
-export default avatar;
+module.exports = avatar;

@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+const Message = require('discord.js');
 
 const server = {
   name: 'server',
@@ -17,4 +17,4 @@ const server = {
     message.channel.send(`This server is called ${message.guild.name}\nTotal members: ${message.guild.memberCount}`);
   },
 };
-export default server;
+module.exports = server;

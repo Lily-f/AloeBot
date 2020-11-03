@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+const Message = require('discord.js');
 
 const userInfo = {
   name: 'user-info',
@@ -18,4 +18,4 @@ const userInfo = {
         Your ID: ${message.author.id}`);
   },
 };
-export default userInfo;
+module.exports = userInfo;

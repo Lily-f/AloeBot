@@ -1,6 +1,6 @@
-export default {
-  prefix: '^',
-  color: '#FF0000',
+module.exports = {
+  prefix: '&',
+  color: '#8ec7b7',
   unicodeEmoji: {
     a: '🇦',
     b: '🇧',

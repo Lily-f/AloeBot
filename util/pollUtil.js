@@ -1,5 +1,5 @@
-import { Message, MessageEmbed } from 'discord.js';
-import config from './config.js';
+const { Message, MessageEmbed } = require('discord.js');
+const config = require('../config.js');
 /**
  * Loads parameters for the poll from message.
  * Creates object and string representations of options and their frequencies.
@@ -96,5 +96,4 @@ function sendPollResults(message, pollMessage, optionFreq, topic) {
     .setFooter(`Poll created by ${message.author.username}`);
   message.channel.send(resultsEmbed);
 }
-
-export default { loadPollArguments, sendPollMessage, sendPollResults };
+module.exports = { loadPollArguments, sendPollMessage, sendPollResults };

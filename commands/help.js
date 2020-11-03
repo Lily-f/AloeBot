@@ -1,5 +1,5 @@
-import { Message } from 'discord.js';
-import config from '../config.js';
+const Message = require('discord.js');
+const config = require('../config.js');
 
 const help = {
   name: 'help',
@@ -59,4 +59,4 @@ const help = {
     message.channel.send(response, { split: true });
   },
 };
-export default help;
+module.exports = help;

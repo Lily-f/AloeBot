@@ -1,5 +1,5 @@
-import { Message } from 'discord.js';
-import pollUtil from '../pollUtil.js';
+const Message = require('discord.js');
+const pollUtil = require('../util/pollUtil.js');
 
 const poll = {
   name: 'poll',
@@ -46,4 +46,4 @@ const poll = {
     });
   },
 };
-export default poll;
+module.exports = poll;

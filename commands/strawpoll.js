@@ -1,5 +1,5 @@
-import { Message } from 'discord.js';
-import pollUtil from '../pollUtil.js';
+const Message = require('discord.js');
+const pollUtil = require('../util/pollUtil.js');
 
 const strawpoll = {
   name: 'strawpoll',
@@ -62,4 +62,4 @@ const strawpoll = {
     });
   },
 };
-export default strawpoll;
+module.exports = strawpoll;

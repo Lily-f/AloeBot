@@ -1,7 +1,7 @@
-import { Client, Collection, Message } from 'discord.js';
-import dotenv from 'dotenv';
-import loadCommands from './commands/load-commands.js';
-import config from './config.js';
+const dotenv = require('dotenv');
+const { Client, Collection, Message } = require('discord.js');
+const loadCommands = require('./commands/load-commands.js');
+const config = require('./config.js');
 
 // Add .env variables to the process. Used to obtain tokens
 dotenv.config();
@@ -114,4 +114,4 @@ aloeBot.on('message', (message) => {
 });
 
 // Login the bot to discord. MUST BE LAST LINE
-aloeBot.login(process.env.DISCORD_TOKEN);
+aloeBot.login(process.env.ALOE2_DISCORD_TOKEN);

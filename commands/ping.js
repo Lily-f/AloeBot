@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+const Message = require('discord.js');
 
 const ping = {
   name: 'ping',
@@ -17,4 +17,4 @@ const ping = {
     message.channel.send('Pong');
   },
 };
-export default ping;
+module.exports = ping;
