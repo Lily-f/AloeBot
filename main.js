@@ -11,6 +11,7 @@ const aloeBot = new Client();
 aloeBot.commands = new Collection();
 loadCommands().forEach((command) => { aloeBot.commands.set(command.name, command); });
 const cooldowns = new Collection();
+const games = new Collection();
 
 // Responce to successful login once
 aloeBot.once('ready', () => {

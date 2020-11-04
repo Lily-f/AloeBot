@@ -5,6 +5,7 @@ const poll = require('./poll.js');
 const strawpoll = require('./strawpoll.js');
 const ping = require('./ping.js');
 const userInfo = require('./user-info.js');
+const hearts = require('./hearts.js');
 
 /**
  * Loads commands from thier respective files
@@ -20,5 +21,6 @@ module.exports = function loadCommands() {
   commands.push(help);
   commands.push(poll);
   commands.push(strawpoll);
+  commands.push(hearts);
   return commands;
 };

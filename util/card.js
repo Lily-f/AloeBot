@@ -17,4 +17,29 @@ class Card {
     this.value = config.value;
   }
 }
-module.exports = { suits, values, Card };
+
+/**
+ * Generates a deack with all 52 cards
+ *
+ * @param {object[]} cardsToSkip cards to not put in the deck
+ * @returns {Card[]} deck of cards
+ */
+function generateDeck(cardsToSkip) {
+  const deck = [];
+  suits.forEach((suit) => {
+    values.forEach((value) => {
+      // Add each type of card to the deck except the ones that should be skipped
+      let skip = false;
+      cardsToSkip.forEach((card) => {
+        if (card.suit === suit && card.value === value) { skip = true; }
+      });
+      if (!skip) {
+        deck.push(new Card({ suit, value }));
+      }
+    });
+  });
+  return deck;
+}
+module.exports = {
+  suits, values, Card, generateDeck,
+};
