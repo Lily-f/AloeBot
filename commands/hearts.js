@@ -1,7 +1,8 @@
-const { Message } = require('discord.js');
+const { Message, MessageEmbed } = require('discord.js');
 const Game = require('../util/card-game.js');
 const Player = require('../util/card-player.js');
 const { generateDeck } = require('../util/card.js');
+const config = require('../config.js');
 
 const hearts = {
   name: 'hearts',
@@ -37,20 +38,16 @@ const hearts = {
 
     // Cretae the deck for the game (remove cards based on player count)
     let deck = [];
-    switch (players.length) {
-      case 3:
-        deck = generateDeck([{ suit: 'Clubs', value: '2' }]);
-        break;
-      case 5:
-        deck = generateDeck([{ suit: 'Clubs', value: '2' }, { suit: 'Diamonds', value: '2' }]);
-        break;
-      default:
-        deck = generateDeck([]);
-    }
+    if (players.length === 3) deck = generateDeck([{ suit: 'Clubs', value: '2' }]);
+    else if (players.length === 5) deck = generateDeck([{ suit: 'Clubs', value: '2' }, { suit: 'Diamonds', value: '2' }]);
+    else deck = generateDeck([]);
 
     const game = new Game({ players: gamePlayers, deck });
-    console.log(JSON.stringify(game));
-    message.reply('Ready!');
+    const response = new MessageEmbed()
+      .setColor(config.color)
+      .setTitle('Hearts!')
+      .setDescription(`Players in game: ${gamePlayers.map((player) => `${player.username}: ${player.hand.map((card) => `${card.suit}:${card.value}`)}\n`)}`);
+    message.channel.send(response);
   },
 };
 module.exports = hearts;

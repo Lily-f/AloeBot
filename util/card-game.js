@@ -1,5 +1,6 @@
 const Player = require('./card-player.js');
 const { Card } = require('./card.js');
+const shuffle = require('./shuffle');
 /**
  * A game of Cards
  */
@@ -12,8 +13,16 @@ class CardGame {
    * @param {Card[]} config.deck deck of cards in the game
    */
   constructor(config) {
+    this.deck = shuffle(config.deck);
     this.players = config.players;
-    this.deck = config.deck;
+
+    // Deal out cards
+    const cardsPerPlayer = this.deck.length / this.players.length;
+    this.players.forEach((player) => {
+      for (let i = 0; i < cardsPerPlayer; i += 1) {
+        player.addCard(this.deck.pop());
+      }
+    });
   }
 }
 module.exports = CardGame;

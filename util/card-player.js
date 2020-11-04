@@ -16,12 +16,12 @@ class Player {
   }
 
   /**
-   * Give this player thier cards
+   * Give this player a card
    *
-   * @param {Card[]} hand cards for the players hand
+   * @param {Card[]} card card for the players hand
    */
-  setHand(hand) {
-    this.hand = hand;
+  addCard(card) {
+    this.hand.push(card);
   }
 }
 module.exports = Player;
