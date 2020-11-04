@@ -1,5 +1,5 @@
 const Message = require('discord.js');
-const pollUtil = require('../util/pollUtil.js');
+const pollUtil = require('../util/poll-util.js');
 
 const poll = {
   name: 'poll',
