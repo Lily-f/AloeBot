@@ -1,4 +1,5 @@
 const Message = require('discord.js');
+const Game = require('../util/card-game.js');
 
 const hearts = {
   name: 'hearts',
@@ -15,6 +16,7 @@ const hearts = {
    * @param {string[]} args args of commands in the message
    */
   execute(message, args) {
+    const game = new Game();
     message.channel.send('Starting hearts! (in dev)');
   },
 };

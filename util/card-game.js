@@ -1,16 +1,18 @@
 const Player = require('./card-player.js');
+const Player = require('./card-player.js');
 const Card = require('./card.js');
 /**
  * A game of Cards
  */
 class CardGame {
   /**
-   * @param {Player[]} players Players in the card game
-   * @param {Card[]} deck Deck of cards  in the game
+   * @param {object} config configuration for the game
+   * @param {Player[]} config.players players in teh game
+   * @param {Card[]} config.deck deck of cards in the game
    */
-  constructor(players, deck) {
-    this.players = players;
-    this.deck = deck;
+  constructor(config) {
+    this.players = config.players;
+    this.deck = config.deck;
   }
 }
 module.exports = CardGame;

@@ -6,10 +6,11 @@ class Player {
   /**
    * Create a player with a given hand.
    *
-   * @param {Card[]} hand Cards in players hand
+   * @param {object} config configuration for the player
+   * @param {Card[]} config.hand cards in the players hand
    */
-  constructor(hand) {
-    this.hand = hand;
+  constructor(config) {
+    this.hand = config.hand;
     this.wonCards = [];
   }
 }

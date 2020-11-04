@@ -8,12 +8,13 @@ class Card {
   /**
    * Creates a card with a given suit and value.
    *
-   * @param {string} suit suit this card has
-   * @param {string} value value this card has
+   * @param {object} config configuration for this card
+   * @param {string} config.suit suit of the card
+   * @param {string} config.value value of the card
    */
-  constructor(suit, value) {
-    this.suit = suit;
-    this.value = value;
+  constructor(config) {
+    this.suit = config.suit;
+    this.value = config.value;
   }
 }
 module.exports = { suits, values, Card };
