@@ -32,12 +32,10 @@ const hearts = {
 
     // Check none of the players are already in a game
     const playersAlreadyInGame = [];
-    message.client.games.forEach((game, creatorId) => {
-      game.players.forEach((player) => {
-        players.forEach((potentialPlayer) => {
-          if (potentialPlayer.id === player.id) playersAlreadyInGame.push(potentialPlayer.username);
-        });
-      });
+    players.forEach((potentialPlayer) => {
+      if (message.client.usersInGames.includes(potentialPlayer.id)) {
+        playersAlreadyInGame.push(potentialPlayer.username);
+      }
     });
     if (playersAlreadyInGame.length) {
       message.reply(`Users: ${playersAlreadyInGame.join(', ')} are already in a game!`);
@@ -47,7 +45,8 @@ const hearts = {
     // Create player instances for the game
     const gamePlayers = [];
     players.forEach((player) => {
-      gamePlayers.push(new Player({ username: player.username, id: player.id }));
+      gamePlayers.push(new Player({ username: player.username }));
+      message.client.usersInGames.push(player.id);
     });
 
     // Cretae the deck for the game (remove cards based on player count)
