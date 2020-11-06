@@ -11,7 +11,7 @@ const aloeBot = new Client();
 aloeBot.commands = new Collection();
 loadCommands().forEach((command) => { aloeBot.commands.set(command.name, command); });
 const cooldowns = new Collection();
-const games = new Collection();
+aloeBot.games = new Collection();
 
 // Responce to successful login once
 aloeBot.once('ready', () => {
@@ -112,6 +112,8 @@ aloeBot.on('message', (message) => {
     console.error(error);
     message.reply('there was an error trying to execute that command!');
   }
+
+  console.log(`games: ${JSON.stringify(aloeBot.games)}`);
 });
 
 // Login the bot to discord. MUST BE LAST LINE

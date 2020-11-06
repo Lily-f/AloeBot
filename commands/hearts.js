@@ -30,10 +30,24 @@ const hearts = {
       return;
     }
 
+    // Check none of the players are already in a game
+    const playersAlreadyInGame = [];
+    message.client.games.forEach((game, creatorId) => {
+      game.players.forEach((player) => {
+        players.forEach((potentialPlayer) => {
+          if (potentialPlayer.id === player.id) playersAlreadyInGame.push(potentialPlayer.username);
+        });
+      });
+    });
+    if (playersAlreadyInGame.length) {
+      message.reply(`Users: ${playersAlreadyInGame.join(', ')} are already in a game!`);
+      return;
+    }
+
     // Create player instances for the game
     const gamePlayers = [];
     players.forEach((player) => {
-      gamePlayers.push(new Player({ username: player.username }));
+      gamePlayers.push(new Player({ username: player.username, id: player.id }));
     });
 
     // Cretae the deck for the game (remove cards based on player count)
@@ -43,6 +57,7 @@ const hearts = {
     else deck = generateDeck([]);
 
     const game = new Game({ players: gamePlayers, deck });
+    message.client.games.set(message.author.id, game);
     const response = new MessageEmbed()
       .setColor(config.color)
       .setTitle('Hearts!')

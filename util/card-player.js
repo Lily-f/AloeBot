@@ -8,11 +8,13 @@ class Player {
    *
    * @param {object} config configuration for the player
    * @param {string} config.username Discord username of the player
+   * @param {string} config.id Discord ID of the player
    */
   constructor(config) {
     this.hand = [];
     this.wonCards = [];
     this.username = config.username;
+    this.id = config.id;
   }
 
   /**
