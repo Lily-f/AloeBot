@@ -23,7 +23,24 @@ class Card {
    * @returns {string} String of card
    */
   toString() {
-    return `[${this.suit} ${this.value}]`;
+    let prefix = '';
+    switch (this.suit) {
+      case 'Hearts':
+        prefix = '♥';
+        break;
+      case 'Spades':
+        prefix = '♠';
+        break;
+      case 'Diamonds':
+        prefix = '♦';
+        break;
+      case 'Clubs':
+        prefix = '♣';
+        break;
+      default:
+        break;
+    }
+    return `${prefix}${this.value}`;
   }
 }
 

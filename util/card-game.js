@@ -11,10 +11,12 @@ class CardGame {
    * @param {object} config configuration for the game
    * @param {Player[]} config.players players in teh game
    * @param {Card[]} config.deck deck of cards in the game
+   * @param {string} config.activePlayer active player's ID
    */
   constructor(config) {
     this.deck = shuffle(config.deck);
     this.players = config.players;
+    this.activePlayer = config.activePlayer;
 
     // Deal out cards and sort hands for readability
     const cardsPerPlayer = this.deck.length / this.players.length;

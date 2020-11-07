@@ -1,5 +1,5 @@
 const { Message, MessageEmbed } = require('discord.js');
-const Game = require('../util/card-game.js');
+const HeartsGame = require('../game-types/hearts-game.js');
 const Player = require('../util/card-player.js');
 const { generateDeck } = require('../util/card.js');
 const config = require('../config.js');
@@ -56,12 +56,17 @@ const hearts = {
     else deck = generateDeck([]);
 
     // Create the game and tell users how to play
-    const game = new Game({ players: Array.from(gamePlayers.values()), deck });
+    const game = new HeartsGame({
+      players: Array.from(gamePlayers.values()),
+      deck,
+      activePlayer: players[Math.floor(Math.random() * players.length)].id,
+    });
     message.client.games.set(message.author.id, game);
     const response = new MessageEmbed()
       .setColor(config.color)
       .setTitle('Hearts!')
-      .setDescription(`Players in game: ${Array.from(gamePlayers.values()).map((player) => ` ${player.username}`)}`);
+      .setDescription(`Players in game: ${Array.from(gamePlayers.values()).map((player) => ` ${player.username}`)}\n
+        Starting player: ${gamePlayers.get(game.activePlayer).username}`);
     message.channel.send(response);
 
     // Tell user their cards
@@ -71,7 +76,7 @@ const hearts = {
     players.forEach((player) => {
       const playerHand = [];
       gamePlayers.get(player.id).hand.forEach((card) => { playerHand.push(card.toString()); });
-      player.send(playerCards.setDescription(`Your cards are: \n${playerHand.join(', ')}`));
+      player.send(playerCards.setDescription(`Your cards are: \n\`${playerHand.join(', ')}\``));
     });
   },
 };
