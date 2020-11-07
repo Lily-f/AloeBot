@@ -113,8 +113,6 @@ aloeBot.on('message', (message) => {
     console.error(error);
     message.reply('there was an error trying to execute that command!');
   }
-
-  console.log(`games: ${JSON.stringify(aloeBot.games)}`);
 });
 
 // Login the bot to discord. MUST BE LAST LINE

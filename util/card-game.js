@@ -1,5 +1,5 @@
 const Player = require('./card-player.js');
-const { Card } = require('./card.js');
+const { Card, suits, values } = require('./card.js');
 const shuffle = require('./shuffle');
 /**
  * A game of Cards
@@ -16,12 +16,16 @@ class CardGame {
     this.deck = shuffle(config.deck);
     this.players = config.players;
 
-    // Deal out cards
+    // Deal out cards and sort hands for readability
     const cardsPerPlayer = this.deck.length / this.players.length;
     this.players.forEach((player) => {
       for (let i = 0; i < cardsPerPlayer; i += 1) {
         player.addCard(this.deck.pop());
       }
+      player.hand.sort((a, b) => {
+        if (a.suit === b.suit) return values.indexOf(b.value) - values.indexOf(a.value);
+        return suits.indexOf(a.suit) - suits.indexOf(b.suit);
+      });
     });
   }
 }

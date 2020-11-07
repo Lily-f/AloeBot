@@ -1,5 +1,5 @@
 const suits = ['Hearts', 'Spades', 'Diamonds', 'Clubs'];
-const values = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'];
+const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace'];
 
 /**
  * A card fron a standard card deck
@@ -15,6 +15,15 @@ class Card {
   constructor(config) {
     this.suit = config.suit;
     this.value = config.value;
+  }
+
+  /**
+   * Get string representation of card
+   *
+   * @returns {string} String of card
+   */
+  toString() {
+    return `[${this.suit} ${this.value}]`;
   }
 }
 

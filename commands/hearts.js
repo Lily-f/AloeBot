@@ -43,25 +43,36 @@ const hearts = {
     }
 
     // Create player instances for the game
-    const gamePlayers = [];
+    const gamePlayers = new Map();
     players.forEach((player) => {
-      gamePlayers.push(new Player({ username: player.username }));
+      gamePlayers.set(player.id, new Player({ username: player.username, userID: player.id }));
       message.client.usersInGames.push(player.id);
     });
 
-    // Cretae the deck for the game (remove cards based on player count)
+    // Create the deck for the game (remove cards based on player count)
     let deck = [];
     if (players.length === 3) deck = generateDeck([{ suit: 'Clubs', value: '2' }]);
     else if (players.length === 5) deck = generateDeck([{ suit: 'Clubs', value: '2' }, { suit: 'Diamonds', value: '2' }]);
     else deck = generateDeck([]);
 
-    const game = new Game({ players: gamePlayers, deck });
+    // Create the game and tell users how to play
+    const game = new Game({ players: Array.from(gamePlayers.values()), deck });
     message.client.games.set(message.author.id, game);
     const response = new MessageEmbed()
       .setColor(config.color)
       .setTitle('Hearts!')
-      .setDescription(`Players in game: ${gamePlayers.map((player) => `${player.username}: ${player.hand.map((card) => `${card.suit}:${card.value}`)}\n`)}`);
+      .setDescription(`Players in game: ${Array.from(gamePlayers.values()).map((player) => ` ${player.username}`)}`);
     message.channel.send(response);
+
+    // Tell user their cards
+    const playerCards = new MessageEmbed()
+      .setColor(config.color)
+      .setTitle('You\'ve started a Hearts game!');
+    players.forEach((player) => {
+      const playerHand = [];
+      gamePlayers.get(player.id).hand.forEach((card) => { playerHand.push(card.toString()); });
+      player.send(playerCards.setDescription(`Your cards are: \n${playerHand.join(', ')}`));
+    });
   },
 };
 module.exports = hearts;
