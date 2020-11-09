@@ -21,8 +21,15 @@ const playCard = {
     const suit = args[0].toUpperCase();
     const value = args[1].toUpperCase();
 
-    // Get game user is in
-    const game = message.client.games.get(message.author.id);
+    // Get game user is in and corresponding Player instance
+    let player;
+    const game = message.client.games.find((g) => g.players.some((p) => {
+      if (p.userId === message.author.id) {
+        player = p;
+        return true;
+      }
+      return false;
+    }));
     if (!game) {
       message.reply('You\'re not in a card game!');
       return;
@@ -35,10 +42,7 @@ const playCard = {
     }
 
     // Check the user has the card being played
-    const hasCard = game.players.some(
-      (player) => player.userId === message.author.id && player.hasCard(suit, value),
-    );
-    if (!hasCard) {
+    if (!player.hasCard(suit, value)) {
       message.reply('You don\'t have that card in your hand!');
       return;
     }
