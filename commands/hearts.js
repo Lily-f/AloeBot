@@ -51,8 +51,8 @@ const hearts = {
 
     // Create the deck for the game (remove cards based on player count)
     let deck = [];
-    if (players.length === 3) deck = generateDeck([{ suit: 'Clubs', value: '2' }]);
-    else if (players.length === 5) deck = generateDeck([{ suit: 'Clubs', value: '2' }, { suit: 'Diamonds', value: '2' }]);
+    if (players.length === 3) deck = generateDeck([{ suit: 'CLUBS', value: '2' }]);
+    else if (players.length === 5) deck = generateDeck([{ suit: 'CLUBS', value: '2' }, { suit: 'DIAMONDS', value: '2' }]);
     else deck = generateDeck([]);
 
     // Create the game and tell users how to play

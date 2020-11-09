@@ -1,5 +1,5 @@
-const suits = ['Hearts', 'Spades', 'Diamonds', 'Clubs'];
-const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace'];
+const suits = ['HEARTS', 'SPADES', 'DIAMONDS', 'CLUBS'];
+const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING', 'ACE'];
 
 /**
  * A card fron a standard card deck
@@ -25,16 +25,16 @@ class Card {
   toString() {
     let prefix = '';
     switch (this.suit) {
-      case 'Hearts':
+      case 'HEARTS':
         prefix = '♥';
         break;
-      case 'Spades':
+      case 'SPADES':
         prefix = '♠';
         break;
-      case 'Diamonds':
+      case 'DIAMONDS':
         prefix = '♦';
         break;
-      case 'Clubs':
+      case 'CLUBS':
         prefix = '♣';
         break;
       default:

@@ -1,15 +1,14 @@
 const Message = require('discord.js');
 const HeartsGame = require('../game-types/hearts-game.js');
-const CardGame = require('../util/card-game.js');
 const UpDownRiverGame = require('../game-types/up-down-river-game.js');
-const { Card } = require('../util/card.js');
+const { suits, values } = require('../util/card.js');
 
 const playCard = {
   name: 'play-card',
   aliases: [],
   description: 'Play a card for an ongoing game',
   requiresArgs: true,
-  usage: '',
+  usage: '<Suit> <Value>',
   guildOnly: true,
   cooldown: 0,
   /**
@@ -19,6 +18,9 @@ const playCard = {
    * @param {string[]} args user given arguments for the comand
    */
   execute(message, args) {
+    const suit = args[0].toUpperCase();
+    const value = args[1].toUpperCase();
+
     // Get game user is in
     const game = message.client.games.get(message.author.id);
     if (!game) {
@@ -26,29 +28,19 @@ const playCard = {
       return;
     }
 
-    // TODO: Check arguments form a valid card
-    console.log(args[0], args[1]);
+    // Check arguments form a valid card
+    if (!suits.includes(suit) || !values.includes(value)) {
+      message.reply(`Invalid Card! requires: ${this.usage}`);
+      return;
+    }
 
     // Check the user has the card being played
-    const hasCard = game.players.some((player) => {
-      console.log(JSON.stringify(player));
-      return player.userId === message.author.id
-      && player.hand.some((card) => card.suit === args[0] && card.value === args[1]);
-    });
-
-    if (hasCard) {
-      console.log('You have the card!');
-    } else {
-      console.log('You don\'t have the card!');
+    const hasCard = game.players.some((player) => player.userId === message.author.id
+      && player.hand.some((card) => card.suit === suit && card.value === value));
+    if (!hasCard) {
+      message.reply('You don\'t have that card in your hand!');
+      return;
     }
-    // game.players.forEach((player) => {
-    //   if (player.userId === message.author.id
-    //     && player.hand.contains({ suit: args[0], value: args[1] })) {
-    //     console.log('You have the card!');
-    //   } else {
-    //     console.log('You don\'t have the card!');
-    //   }
-    // });
 
     // TODO: Play the card based on the gametype the user is playing
     if (game instanceof HeartsGame) {
