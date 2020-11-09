@@ -2,6 +2,7 @@ const Message = require('discord.js');
 const HeartsGame = require('../game-types/hearts-game.js');
 const CardGame = require('../util/card-game.js');
 const UpDownRiverGame = require('../game-types/up-down-river-game.js');
+const { Card } = require('../util/card.js');
 
 const playCard = {
   name: 'play-card',
@@ -25,9 +26,30 @@ const playCard = {
       return;
     }
 
-    // TODO: get the user and card being played
+    // TODO: Check arguments form a valid card
+    console.log(args[0], args[1]);
 
-    // TODO: Check the user has the card being played
+    // Check the user has the card being played
+    const hasCard = game.players.some((player) => {
+      console.log(JSON.stringify(player));
+      return player.userId === message.author.id
+      && player.hand.some((card) => card.suit === args[0] && card.value === args[1]);
+    });
+
+    if (hasCard) {
+      console.log('You have the card!');
+    } else {
+      console.log('You don\'t have the card!');
+    }
+    // game.players.forEach((player) => {
+    //   if (player.userId === message.author.id
+    //     && player.hand.contains({ suit: args[0], value: args[1] })) {
+    //     console.log('You have the card!');
+    //   } else {
+    //     console.log('You don\'t have the card!');
+    //   }
+    // });
+
     // TODO: Play the card based on the gametype the user is playing
     if (game instanceof HeartsGame) {
       message.reply('You\'re playing hearts!');
