@@ -35,8 +35,9 @@ const playCard = {
     }
 
     // Check the user has the card being played
-    const hasCard = game.players.some((player) => player.userId === message.author.id
-      && player.hand.some((card) => card.suit === suit && card.value === value));
+    const hasCard = game.players.some(
+      (player) => player.userId === message.author.id && player.hasCard(suit, value),
+    );
     if (!hasCard) {
       message.reply('You don\'t have that card in your hand!');
       return;

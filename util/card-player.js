@@ -25,5 +25,16 @@ class Player {
   addCard(card) {
     this.hand.push(card);
   }
+
+  /**
+   * Check if this player has a given card
+   *
+   * @param {string} suit card suit
+   * @param {string} value card value
+   * @returns {boolean} does this players hand contain this card
+   */
+  hasCard(suit, value) {
+    return this.hand.some((card) => card.suit === suit && card.value === value);
+  }
 }
 module.exports = Player;
