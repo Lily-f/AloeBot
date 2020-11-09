@@ -1,6 +1,4 @@
 const Message = require('discord.js');
-const HeartsGame = require('../game-types/hearts-game.js');
-const UpDownRiverGame = require('../game-types/up-down-river-game.js');
 const { suits, values } = require('../util/card.js');
 
 const playCard = {
@@ -42,17 +40,14 @@ const playCard = {
     }
 
     // Check the user has the card being played
-    if (!player.hasCard(suit, value)) {
+    const card = player.getCard(suit, value);
+    if (!card) {
       message.reply('You don\'t have that card in your hand!');
       return;
     }
 
-    // TODO: Play the card based on the gametype the user is playing
-    if (game instanceof HeartsGame) {
-      message.reply('You\'re playing hearts!');
-    } else if (game instanceof UpDownRiverGame) {
-      message.reply('You\'re playing Up and Down the River');
-    }
+    // Play the card
+    game.playCard({ message, card });
   },
 };
 module.exports = playCard;

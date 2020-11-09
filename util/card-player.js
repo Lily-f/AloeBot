@@ -27,14 +27,14 @@ class Player {
   }
 
   /**
-   * Check if this player has a given card
+   * Get a card from this players hand
    *
    * @param {string} suit card suit
    * @param {string} value card value
    * @returns {boolean} does this players hand contain this card
    */
-  hasCard(suit, value) {
-    return this.hand.some((card) => card.suit === suit && card.value === value);
+  getCard(suit, value) {
+    return this.hand.find((card) => card.suit === suit && card.value === value);
   }
 }
 module.exports = Player;

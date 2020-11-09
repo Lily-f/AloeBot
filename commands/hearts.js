@@ -56,17 +56,19 @@ const hearts = {
     else deck = generateDeck([]);
 
     // Create the game and tell users how to play
+    const startPlayer = players[Math.floor(Math.random() * players.length)];
     const game = new HeartsGame({
       players: Array.from(gamePlayers.values()),
       deck,
-      activePlayer: players[Math.floor(Math.random() * players.length)].id,
+      activePlayerId: startPlayer.id,
+      activePlayerName: startPlayer.username,
     });
     message.client.games.set(message.author.id, game);
     const response = new MessageEmbed()
       .setColor(config.color)
       .setTitle('Hearts!')
       .setDescription(`Players in game: ${Array.from(gamePlayers.values()).map((player) => ` ${player.username}`)}\n
-        Starting player: ${gamePlayers.get(game.activePlayer).username}`);
+        Starting player: ${game.activePlayerName}`);
     message.channel.send(response);
 
     // Tell user their cards
