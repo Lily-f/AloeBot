@@ -45,7 +45,7 @@ const hearts = {
     // Create player instances for the game
     const gamePlayers = new Map();
     players.forEach((player) => {
-      gamePlayers.set(player.id, new Player({ username: player.username, userID: player.id }));
+      gamePlayers.set(player.id, new Player({ username: player.username, userId: player.id }));
       message.client.usersInGames.push(player.id);
     });
 
