@@ -25,6 +25,8 @@ const proxyMessage = new ProxyMessage();
 // Play a trick
 for (let i = 0; i < 3; i += 1) {
   const player = players.find((p) => p.userId === game.activePlayerId);
-  const card = player.hand.pop();
+  const randIndex = Math.floor(Math.random() * player.hand.length);
+  const card = player.hand[randIndex];
+  player.hand.splice(randIndex, 1);
   game.playCard({ message: proxyMessage, card, player });
 }

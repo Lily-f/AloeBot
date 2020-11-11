@@ -2,6 +2,7 @@ const { Message } = require('discord.js');
 const Game = require('./card-game.js');
 const { Card } = require('../util/card.js');
 const Player = require('../util/card-player.js');
+const card = require('../util/card.js');
 
 class HeartsGame extends Game {
   /**
@@ -31,7 +32,10 @@ class HeartsGame extends Game {
     }
 
     // Check the player is following the suit if they can
-
+    if (this.currentTrick.length > 0 && config.card.suit !== this.currentTrick[0].suit) {
+      config.message.reply(`You didn\'t follow suit! Play ${this.currentTrick[0].suit}`);
+      return;
+    }
     // Add played card to current trick
     config.message.reply(`You played \`${config.card.toString()}\``);
     this.currentTrick.push(config.card);
