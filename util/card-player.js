@@ -34,7 +34,11 @@ class Player {
    * @returns {boolean} does this players hand contain this card
    */
   getCard(suit, value) {
-    return this.hand.find((card) => card.suit === suit && card.value === value);
+    const cardIndex = this.hand.findIndex((card) => card.suit === suit && card.value === value);
+    if (cardIndex === -1) return undefined;
+    const card = this.hand[cardIndex];
+    this.hand.splice(cardIndex, 1);
+    return card;
   }
 }
 module.exports = Player;

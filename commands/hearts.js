@@ -56,7 +56,7 @@ const hearts = {
     else deck = generateDeck([]);
 
     // Create the game and tell users how to play
-    const startPlayer = players[Math.floor(Math.random() * players.length)];
+    const startPlayer = players[0];// players[Math.floor(Math.random() * players.length)];
     const game = new HeartsGame({
       players: Array.from(gamePlayers.values()),
       deck,

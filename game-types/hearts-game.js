@@ -16,6 +16,8 @@ class HeartsGame extends Game {
       return;
     }
     config.message.reply(`You played \`${config.card.toString()}\``);
+
+    // TODO: remove the card from the players hand
   }
 }
 module.exports = HeartsGame;
