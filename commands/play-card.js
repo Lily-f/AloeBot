@@ -47,7 +47,7 @@ const playCard = {
     }
 
     // Play the card
-    game.playCard({ message, card, userId: message.author.id });
+    game.playCard({ message, card, player });
   },
 };
 module.exports = playCard;

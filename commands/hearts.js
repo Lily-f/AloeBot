@@ -78,7 +78,7 @@ const hearts = {
     players.forEach((player) => {
       const playerHand = [];
       gamePlayers.get(player.id).hand.forEach((card) => { playerHand.push(card.toString()); });
-      // player.send(playerCards.setDescription(`Your cards are: \n\`${playerHand.join(', ')}\``));
+      player.send(playerCards.setDescription(`Your cards are: \n\`${playerHand.join(', ')}\``));
     });
   },
 };

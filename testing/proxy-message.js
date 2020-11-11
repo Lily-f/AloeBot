@@ -1,4 +1,4 @@
-class proxyMessage {
+class ProxyMessage {
   /**
    * Send a given message
    *
@@ -22,4 +22,4 @@ class proxyMessage {
   }
 }
 
-module.exports = proxyMessage;
+module.exports = ProxyMessage;
