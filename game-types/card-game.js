@@ -1,6 +1,6 @@
-const Player = require('./card-player.js');
-const { Card, suits, values } = require('./card.js');
-const shuffle = require('./shuffle');
+const Player = require('../util/card-player.js');
+const { Card, suits, values } = require('../util/card.js');
+const shuffle = require('../util/shuffle.js');
 /**
  * A game of Cards
  */

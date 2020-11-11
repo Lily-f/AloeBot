@@ -5,7 +5,7 @@
   "main": "main.js",
   "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node testing/hearts-tests.js",
     "start": "node ."
   },
   "repository": {
