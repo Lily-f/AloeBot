@@ -28,6 +28,6 @@ const proxyMessage = new ProxyMessage();
 for (let i = 0; i < 3; i += 1) {
   const player = players.find((p) => p.userId === game.activePlayerId);
   console.log(player);
-  const card = player.hand.pop();
-  game.playCard({ message: proxyMessage, card, player });
+  const card = player.hand[0];
+  if (game.playCard({ message: proxyMessage, card, player })) player.hand.shift();
 }
