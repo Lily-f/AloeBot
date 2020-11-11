@@ -33,12 +33,19 @@ class HeartsGame extends Game {
 
     // Check the player is following the suit if they can
     if (this.currentTrick.length > 0 && config.card.suit !== this.currentTrick[0].suit) {
-      config.message.reply(`You didn\'t follow suit! Play ${this.currentTrick[0].suit}`);
+      // Check if player cannot follow suit
+      if (!config.player.hand.some((c) => c.suit === this.currentTrick[0].suit)) return;
+
+      config.message.reply(`You didn't follow suit! Play ${this.currentTrick[0].suit}`);
       return;
     }
-    // Add played card to current trick
+    // Add played card to current trick, set next player to active
     config.message.reply(`You played \`${config.card.toString()}\``);
     this.currentTrick.push(config.card);
+    let nextPlayerIndex = this.players.findIndex((p) => p.userId === this.activePlayerId) + 1;
+    if (nextPlayerIndex === this.players.length) nextPlayerIndex = 0;
+    this.activePlayerId = this.players[nextPlayerIndex].userId;
+    this.activePlayerName = this.players[nextPlayerIndex].username;
 
     // Handle the end of the trick
     if (this.currentTrick.length === this.players.length) {
