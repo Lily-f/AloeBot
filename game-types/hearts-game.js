@@ -1,6 +1,6 @@
 const { Message } = require('discord.js');
 const Game = require('./card-game.js');
-const { Card } = require('../util/card.js');
+const { Card, values } = require('../util/card.js');
 const Player = require('../util/card-player.js');
 
 class HeartsGame extends Game {
@@ -32,14 +32,14 @@ class HeartsGame extends Game {
     }
 
     // Check the player is following the suit if they can
-    if (this.currentTrick.length > 0 && config.card.suit !== this.currentTrick[0].suit
-      && config.player.hand.some((c) => c.suit === this.currentTrick[0].suit)) {
-      config.message.reply(`You didn't follow suit! Play ${this.currentTrick[0].suit}`);
+    if (this.currentTrick.length > 0 && config.card.suit !== this.currentTrick[0].card.suit
+      && config.player.hand.some((c) => c.suit === this.currentTrick[0].card.suit)) {
+      config.message.reply(`You didn't follow suit! Play ${this.currentTrick[0].card.suit}`);
       return false;
     }
     // Add played card to current trick, set next player to active
     config.message.reply(`You played \`${config.card.toString()}\``);
-    this.currentTrick.push(config.card);
+    this.currentTrick.push({ card: config.card, player: config.player.userId });
     let nextPlayerIndex = this.players.findIndex((p) => p.userId === this.activePlayerId) + 1;
     if (nextPlayerIndex === this.players.length) nextPlayerIndex = 0;
     this.activePlayerId = this.players[nextPlayerIndex].userId;
@@ -47,7 +47,14 @@ class HeartsGame extends Game {
 
     // Handle the end of the trick
     if (this.currentTrick.length === this.players.length) {
-      config.message.send('That was the last card in the trick!');
+      let winningPlay = this.currentTrick[0];
+      this.currentTrick.forEach((play) => {
+        if (play.card.suit === winningPlay.card.suit
+           && values.indexOf(play.card.value) > values.indexOf(winningPlay.card.value)) {
+          winningPlay = play;
+        }
+      });
+      console.log(this.players.find((p) => p.userId === winningPlay.player).username);
     }
     return true;
   }
