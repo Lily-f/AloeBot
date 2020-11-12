@@ -58,16 +58,19 @@ class HeartsGame extends Game {
       this.activePlayerId = winningPlay.player.userId;
       this.activePlayerName = winningPlay.player.username;
 
+      const heartsThisTrick = [];
       this.currentTrick.forEach((play) => {
         if (play.card.suit === 'HEARTS') {
           winningPlay.player.wonCards.push(play.card);
+          heartsThisTrick.push(play.card);
         }
       });
-      if (winningPlay.player.wonCards.length) {
-        config.message.channel.send(`${winningPlay.player.username} has won ${winningPlay.player.wonCards}`);
+      if (heartsThisTrick.length) {
+        config.message.channel.send(`${winningPlay.player.username} has won ${heartsThisTrick}`);
       } else {
         config.message.channel.send(`${winningPlay.player.username} won the trick. No hearts`);
       }
+      this.currentTrick = [];
 
       // Handle if that was the last card in the game
       if (config.player.hand.length === 1) {

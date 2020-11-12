@@ -21,7 +21,7 @@ const hearts = {
     const players = [];
     players.push(message.author);
     message.mentions.users.forEach((user) => {
-      if (!players.includes(user) /* && !user.bot */) players.push(user);
+      if (!players.includes(user) && !user.bot) players.push(user);
     });
 
     // Check there are between 3 and 6 (inclusive) players for the game
