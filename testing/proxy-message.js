@@ -1,4 +1,8 @@
 class ProxyMessage {
+  constructor() {
+    this.channel = { send: this.send };
+  }
+
   /**
    * Send a given message
    *

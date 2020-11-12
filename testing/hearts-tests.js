@@ -4,9 +4,9 @@ const ProxyMessage = require('./proxy-message.js');
 const { generateDeck, Card } = require('../util/card.js');
 
 // Create deck and players
-const deck = [new Card({ suit: 'HEARTS', value: '2' }),
-  new Card({ suit: 'HEARTS', value: '3' }),
-  new Card({ suit: 'HEARTS', value: '4' })];// generateDeck([{ suit: 'CLUBS', value: '2' }]);
+const deck = [new Card({ suit: 'DIAMONDS', value: '2' }),
+  new Card({ suit: 'SPADES', value: '3' }),
+  new Card({ suit: 'CLUBS', value: '4' })];// generateDeck([{ suit: 'CLUBS', value: '2' }]);
 const players = [
   new Player({ username: 'playerOne', userId: '1' }),
   new Player({ username: 'playerTwo', userId: '2' }),
@@ -27,7 +27,6 @@ const proxyMessage = new ProxyMessage();
 // Play a trick
 for (let i = 0; i < 3; i += 1) {
   const player = players.find((p) => p.userId === game.activePlayerId);
-  console.log(player);
   const card = player.hand[0];
   if (game.playCard({ message: proxyMessage, card, player })) player.hand.shift();
 }
