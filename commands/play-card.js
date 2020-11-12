@@ -47,7 +47,10 @@ const playCard = {
     }
 
     // Play the card
-    game.playCard({ message, card, player });
+    if (game.playCard({ message, card, player })) {
+      player.removeCard(card);
+      message.author.send(`Your cards are: \n\`${player.hand.join(', ')}\``);
+    }
   },
 };
 module.exports = playCard;

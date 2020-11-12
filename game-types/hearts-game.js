@@ -71,14 +71,15 @@ class HeartsGame extends Game {
 
       // Handle if that was the last card in the game
       if (config.player.hand.length === 1) {
-        const scores = new Map();
+        let scoresMessage = '';
         this.players.forEach((player) => {
-          scores.set(player.userId, 0);
+          let score = 0;
           player.wonCards.forEach((card) => {
-            scores.set(player.userId, scores.get(player.userId) + values.indexOf(card.value) + 2);
+            score += values.indexOf(card.value) + 2;
           });
+          scoresMessage += `${player.username}: ${score}\n`;
         });
-        config.message.channel.send(`GAME OVER\nScores are: ${JSON.stringify(scores)}`);
+        config.message.channel.send(`GAME OVER. Scores are:\n${scoresMessage}`);
       }
     }
     return true;

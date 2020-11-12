@@ -36,9 +36,16 @@ class Player {
   getCard(suit, value) {
     const cardIndex = this.hand.findIndex((card) => card.suit === suit && card.value === value);
     if (cardIndex === -1) return undefined;
-    const card = this.hand[cardIndex];
-    this.hand.splice(cardIndex, 1);
-    return card;
+    return this.hand[cardIndex];
+  }
+
+  /**
+   * Remove a given card from players hand
+   *
+   * @param {Card} card card to remove
+   */
+  removeCard(card) {
+    this.hand.splice(this.hand.indexOf(card), 1);
   }
 }
 module.exports = Player;

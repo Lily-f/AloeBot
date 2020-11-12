@@ -4,7 +4,7 @@ const ProxyMessage = require('./proxy-message.js');
 const { generateDeck, Card } = require('../util/card.js');
 
 // Create deck and players
-const deck = [new Card({ suit: 'DIAMONDS', value: '2' }),
+const deck = [new Card({ suit: 'HEARTS', value: '2' }),
   new Card({ suit: 'SPADES', value: '3' }),
   new Card({ suit: 'CLUBS', value: '4' })];// generateDeck([{ suit: 'CLUBS', value: '2' }]);
 const players = [
