@@ -25,38 +25,8 @@ const ohHell = {
     if (!players) return;
 
     // Create playr instances for users
-    const gamePlayers = checkValidPlayers({ message, gamename: 'Oh Hell' });
+    const gamePlayers = checkValidPlayers({ message, players });
     if (!gamePlayers) return;
-    // const players = [];
-    // players.push(message.author);
-    // message.mentions.users.forEach((user) => {
-    //   if (!players.includes(user) && !user.bot) players.push(user);
-    // });
-
-    // // Check there are between 3 and 7 (inclusive) players for the game
-    // if (players.length < 2 || players.length > 7) {
-    //   message.reply('Oh Hell needs 3-7 players! "@" 1-6 other players for a game (no bots)');
-    //   return;
-    // }
-
-    // // Check none of the players are already in a game
-    // const playersAlreadyInGame = [];
-    // players.forEach((potentialPlayer) => {
-    //   if (message.client.usersInGames.includes(potentialPlayer.id)) {
-    //     playersAlreadyInGame.push(potentialPlayer.username);
-    //   }
-    // });
-    // if (playersAlreadyInGame.length) {
-    //   message.reply(`Users: ${playersAlreadyInGame.join(', ')} are already in a game!`);
-    //   return;
-    // }
-
-    // // Create player instances for the game
-    // const gamePlayers = new Map();
-    // players.forEach((player) => {
-    //   gamePlayers.set(player.id, new Player({ username: player.username, userId: player.id }));
-    //   message.client.usersInGames.push(player.id);
-    // });
 
     // Create the initial deck for the game
     const deck = generateDeck([]);
@@ -78,14 +48,7 @@ const ohHell = {
     message.channel.send(response);
 
     // Tell user their cards
-    const playerCards = new MessageEmbed()
-      .setColor(config.color)
-      .setTitle('You\'ve started a Oh Hell game!');
-    players.forEach((player) => {
-      const playerHand = [];
-      gamePlayers.get(player.id).hand.forEach((card) => { playerHand.push(card.toString()); });
-      player.send(playerCards.setDescription(`Your cards are: \n\`${playerHand.join(', ')}\``));
-    });
+    game.displayCards(players);
   },
 };
 module.exports = ohHell;

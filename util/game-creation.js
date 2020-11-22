@@ -20,7 +20,8 @@ function readPlayers(config) {
 
   // Check there are between 3 and 7 (inclusive) players for the game
   if (players.length < config.minPlayers || players.length > config.maxPlayers) {
-    config.message.reply(`${config.gamename} needs ${config.minPlayers}-${config.maxPlayers} players! "@" ${config.minPlayers - 1}-${config.maxPlayers - 1} other players for a game (no bots)`);
+    config.message.reply(`${config.gamename} needs ${config.minPlayers}-${config.maxPlayers} players!
+     "@" ${config.minPlayers - 1}-${config.maxPlayers - 1} other players for a game (no bots)`);
     return false;
   }
   return players;
@@ -31,10 +32,8 @@ function readPlayers(config) {
  *
  * @param {object} config configuration object for function
  * @param {Message} config.message discord message with command
- * @param {string} config.gamename name of game to be created
  * @param {User[]} config.players Discord users to play
  * @returns {Map<Player>} player instances
- *
  */
 function checkValidPlayers(config) {
   // Check none of the players are already in a game
