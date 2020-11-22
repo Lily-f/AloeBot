@@ -1,8 +1,8 @@
 const { Message } = require('discord.js');
-const Game = require('../util/card-game.js');
+const Game = require('./card-game.js');
 const { Card } = require('../util/card.js');
 
-class UpDownRiverGame extends Game {
+class OhHellGame extends Game {
 /**
  * Play a given card from a given player if tey are the active player
  *
@@ -11,7 +11,7 @@ class UpDownRiverGame extends Game {
  * @param {Card} config.card Card to play
  */
   playCard(config) {
-    console.log(`playinging card for up and down the river:${this.activePlayer}`);
+    console.log(`playing card for Oh Hell:${this.activePlayer}`);
   }
 }
-module.exports = UpDownRiverGame;
+module.exports = OhHellGame;

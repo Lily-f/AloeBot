@@ -1,19 +1,19 @@
 const { Message, MessageEmbed } = require('discord.js');
-const HeartsGame = require('../game-types/hearts-game.js');
+const OhHellGame = require('../game-types/oh-hell-game.js');
 const Player = require('../util/card-player.js');
 const { generateDeck } = require('../util/card.js');
 const config = require('../config.js');
 
 const hearts = {
-  name: 'hearts',
+  name: 'oh-hell',
   aliases: [],
-  description: 'Start a game of Hearts',
+  description: 'Start a game of Oh Hell',
   requiresArgs: true,
   usage: '@player2 @player3',
   guildOnly: true,
   cooldown: 5,
   /**
-   * Create poll command
+   * Create Oh Hell card game command
    *
    * @param {Message} message  user invocation message
    */
@@ -24,9 +24,9 @@ const hearts = {
       if (!players.includes(user) && !user.bot) players.push(user);
     });
 
-    // Check there are between 3 and 5 (inclusive) players for the game
-    if (players.length < 2 || players.length > 5) {
-      message.reply('Hearts needs 3-5 players! "@" 1-4 other players for a game (no bots)');
+    // Check there are between 3 and 7 (inclusive) players for the game
+    if (players.length < 2 || players.length > 7) {
+      message.reply('Oh Hell needs 3-7 players! "@" 1-6 other players for a game (no bots)');
       return;
     }
 
@@ -49,15 +49,12 @@ const hearts = {
       message.client.usersInGames.push(player.id);
     });
 
-    // Create the deck for the game (remove cards based on player count)
-    let deck = [];
-    if (players.length === 3) deck = generateDeck([{ suit: 'CLUBS', value: '2' }]);
-    else if (players.length === 5) deck = generateDeck([{ suit: 'CLUBS', value: '2' }, { suit: 'DIAMONDS', value: '2' }]);
-    else deck = generateDeck([]);
+    // Create the initial deck for the game
+    const deck = generateDeck([]);
 
     // Create the game and tell users how to play
     const startPlayer = players[Math.floor(Math.random() * players.length)];
-    const game = new HeartsGame({
+    const game = new OhHellGame({
       players: Array.from(gamePlayers.values()),
       deck,
       activePlayerId: startPlayer.id,
@@ -66,7 +63,7 @@ const hearts = {
     message.client.games.set(message.author.id, game);
     const response = new MessageEmbed()
       .setColor(config.color)
-      .setTitle('Hearts!')
+      .setTitle('Oh Hell!')
       .setDescription(`Players in game: ${Array.from(gamePlayers.values()).map((player) => ` ${player.username}`)}\n
         Starting player: ${game.activePlayerName}`);
     message.channel.send(response);
@@ -74,7 +71,7 @@ const hearts = {
     // Tell user their cards
     const playerCards = new MessageEmbed()
       .setColor(config.color)
-      .setTitle('You\'ve started a Hearts game!');
+      .setTitle('You\'ve started a Oh Hell game!');
     players.forEach((player) => {
       const playerHand = [];
       gamePlayers.get(player.id).hand.forEach((card) => { playerHand.push(card.toString()); });
