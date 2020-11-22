@@ -1,8 +1,7 @@
-const { Message, MessageEmbed } = require('discord.js');
+const { Message } = require('discord.js');
 const OhHellGame = require('../game-types/oh-hell-game.js');
 const { generateDeck } = require('../util/card.js');
-const { checkValidPlayers, readPlayers } = require('../util/game-creation.js');
-const config = require('../config.js');
+const { checkValidPlayers, readPlayers, makeGame } = require('../util/game-creation.js');
 
 const ohHell = {
   name: 'oh-hell',
@@ -24,7 +23,7 @@ const ohHell = {
     });
     if (!players) return;
 
-    // Create playr instances for users
+    // Create player instances for users
     const gamePlayers = checkValidPlayers({ message, players });
     if (!gamePlayers) return;
 
@@ -39,15 +38,7 @@ const ohHell = {
       activePlayerId: startPlayer.id,
       activePlayerName: startPlayer.username,
     });
-    message.client.games.set(message.author.id, game);
-    const response = new MessageEmbed()
-      .setColor(config.color)
-      .setTitle('Oh Hell!')
-      .setDescription(`Players in game: ${Array.from(gamePlayers.values()).map((player) => ` ${player.username}`)}\n
-        Starting player: ${game.activePlayerName}`);
-    message.channel.send(response);
-
-    // Tell user their cards
+    makeGame({ message, game, gamename: 'Oh Hell' });
     game.displayCards(players);
   },
 };

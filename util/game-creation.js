@@ -1,5 +1,7 @@
-const { Message, User } = require('discord.js');
+const { Message, User, MessageEmbed } = require('discord.js');
 const Player = require('./card-player.js');
+const CardGame = require('../game-types/card-game.js');
+const botConfig = require('../config.js');
 
 /**
  * oof
@@ -57,4 +59,20 @@ function checkValidPlayers(config) {
   return gamePlayers;
 }
 
-module.exports = { checkValidPlayers, readPlayers };
+/**
+ * @param {object} config configuration for making game
+ * @param {Message} config.message discord message with command
+ * @param {CardGame} config.game game being created
+ * @param {string} config.gamename name of game being created
+ */
+function makeGame(config) {
+  config.message.client.games.set(config.message.author.id, config.game);
+  const response = new MessageEmbed()
+    .setColor(botConfig.color)
+    .setTitle(`${config.gamename}!`)
+    .setDescription(`Players in game: ${config.game.players.map((player) => ` ${player.username}`)}\n
+        Starting player: ${config.game.activePlayerName}`);
+  config.message.channel.send(response);
+}
+
+module.exports = { checkValidPlayers, readPlayers, makeGame };

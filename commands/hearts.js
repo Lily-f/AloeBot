@@ -1,6 +1,6 @@
 const { Message, MessageEmbed } = require('discord.js');
 const HeartsGame = require('../game-types/hearts-game.js');
-const { checkValidPlayers, readPlayers } = require('../util/game-creation.js');
+const { checkValidPlayers, readPlayers, makeGame } = require('../util/game-creation.js');
 const { generateDeck } = require('../util/card.js');
 const config = require('../config.js');
 
@@ -42,15 +42,7 @@ const hearts = {
       activePlayerId: startPlayer.id,
       activePlayerName: startPlayer.username,
     });
-    message.client.games.set(message.author.id, game);
-    const response = new MessageEmbed()
-      .setColor(config.color)
-      .setTitle('Hearts!')
-      .setDescription(`Players in game: ${Array.from(gamePlayers.values()).map((player) => ` ${player.username}`)}\n
-        Starting player: ${game.activePlayerName}`);
-    message.channel.send(response);
-
-    // Tell user their cards
+    makeGame({ message, game, gamename: 'Hearts' });
     game.displayCards(players);
   },
 };

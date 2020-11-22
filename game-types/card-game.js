@@ -2,7 +2,7 @@ const { MessageEmbed, User } = require('discord.js');
 const Player = require('../util/card-player.js');
 const { Card, suits, values } = require('../util/card.js');
 const shuffle = require('../util/shuffle.js');
-const config = require('../config.js');
+const botConfig = require('../config.js');
 
 /**
  * A game of Cards
@@ -43,7 +43,7 @@ class CardGame {
    */
   displayCards(users) {
     const playerCards = new MessageEmbed()
-      .setColor(config.color)
+      .setColor(botConfig.color)
       .setTitle('You\'ve started a Oh Hell game!');
     users.forEach((user) => {
       const playerHand = [];
