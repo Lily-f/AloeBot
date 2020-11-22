@@ -12,6 +12,7 @@ class HeartsGame extends Game {
   constructor(config) {
     super(config);
     this.currentTrick = [];
+    this.name = 'Hearts';
   }
 
   /**

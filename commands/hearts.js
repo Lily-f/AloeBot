@@ -1,8 +1,7 @@
-const { Message, MessageEmbed } = require('discord.js');
+const { Message } = require('discord.js');
 const HeartsGame = require('../game-types/hearts-game.js');
 const { checkValidPlayers, readPlayers, makeGame } = require('../util/game-creation.js');
 const { generateDeck } = require('../util/card.js');
-const config = require('../config.js');
 
 const hearts = {
   name: 'hearts',

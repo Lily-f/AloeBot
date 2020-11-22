@@ -1,8 +1,7 @@
-const { MessageEmbed, User } = require('discord.js');
+const { User } = require('discord.js');
 const Player = require('../util/card-player.js');
 const { Card, suits, values } = require('../util/card.js');
 const shuffle = require('../util/shuffle.js');
-const botConfig = require('../config.js');
 
 /**
  * A game of Cards
@@ -22,6 +21,7 @@ class CardGame {
     this.players = config.players;
     this.activePlayerId = config.activePlayerId;
     this.activePlayerName = config.activePlayerName;
+    this.name = '';
 
     // Deal out cards and sort hands for readability
     const cardsPerPlayer = this.deck.length / this.players.length;
@@ -42,15 +42,9 @@ class CardGame {
    * @param {User[]} users discord users that are playing
    */
   displayCards(users) {
-    const playerCards = new MessageEmbed()
-      .setColor(botConfig.color)
-      .setTitle('You\'ve started a Oh Hell game!');
     users.forEach((user) => {
-      const playerHand = [];
-      this.players.find((player) => player.userId === user.id).hand.forEach(
-        (card) => { playerHand.push(card.toString()); },
-      );
-      user.send(playerCards.setDescription(`Your cards are: \n\`${playerHand.join(', ')}\``));
+      const playerHand = this.players.find((player) => player.userId === user.id).hand;
+      user.send(`You Started a ${this.name} game!\nYour cards are: \n\`${playerHand.join(', ')}\``);
     });
   }
 }
