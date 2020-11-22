@@ -1,10 +1,10 @@
 const { Message, MessageEmbed } = require('discord.js');
 const OhHellGame = require('../game-types/oh-hell-game.js');
-const Player = require('../util/card-player.js');
 const { generateDeck } = require('../util/card.js');
+const { checkValidPlayers, readPlayers } = require('../util/game-creation.js');
 const config = require('../config.js');
 
-const hearts = {
+const ohHell = {
   name: 'oh-hell',
   aliases: [],
   description: 'Start a game of Oh Hell',
@@ -18,36 +18,45 @@ const hearts = {
    * @param {Message} message  user invocation message
    */
   execute(message) {
-    const players = [];
-    players.push(message.author);
-    message.mentions.users.forEach((user) => {
-      if (!players.includes(user) && !user.bot) players.push(user);
+    // Read discord users (players) from command
+    const players = readPlayers({
+      message, minPlayers: 2, maxPlayers: 7, gamename: 'Oh Hell',
     });
+    if (!players) return;
 
-    // Check there are between 3 and 7 (inclusive) players for the game
-    if (players.length < 2 || players.length > 7) {
-      message.reply('Oh Hell needs 3-7 players! "@" 1-6 other players for a game (no bots)');
-      return;
-    }
+    // Create playr instances for users
+    const gamePlayers = checkValidPlayers({ message, gamename: 'Oh Hell' });
+    if (!gamePlayers) return;
+    // const players = [];
+    // players.push(message.author);
+    // message.mentions.users.forEach((user) => {
+    //   if (!players.includes(user) && !user.bot) players.push(user);
+    // });
 
-    // Check none of the players are already in a game
-    const playersAlreadyInGame = [];
-    players.forEach((potentialPlayer) => {
-      if (message.client.usersInGames.includes(potentialPlayer.id)) {
-        playersAlreadyInGame.push(potentialPlayer.username);
-      }
-    });
-    if (playersAlreadyInGame.length) {
-      message.reply(`Users: ${playersAlreadyInGame.join(', ')} are already in a game!`);
-      return;
-    }
+    // // Check there are between 3 and 7 (inclusive) players for the game
+    // if (players.length < 2 || players.length > 7) {
+    //   message.reply('Oh Hell needs 3-7 players! "@" 1-6 other players for a game (no bots)');
+    //   return;
+    // }
 
-    // Create player instances for the game
-    const gamePlayers = new Map();
-    players.forEach((player) => {
-      gamePlayers.set(player.id, new Player({ username: player.username, userId: player.id }));
-      message.client.usersInGames.push(player.id);
-    });
+    // // Check none of the players are already in a game
+    // const playersAlreadyInGame = [];
+    // players.forEach((potentialPlayer) => {
+    //   if (message.client.usersInGames.includes(potentialPlayer.id)) {
+    //     playersAlreadyInGame.push(potentialPlayer.username);
+    //   }
+    // });
+    // if (playersAlreadyInGame.length) {
+    //   message.reply(`Users: ${playersAlreadyInGame.join(', ')} are already in a game!`);
+    //   return;
+    // }
+
+    // // Create player instances for the game
+    // const gamePlayers = new Map();
+    // players.forEach((player) => {
+    //   gamePlayers.set(player.id, new Player({ username: player.username, userId: player.id }));
+    //   message.client.usersInGames.push(player.id);
+    // });
 
     // Create the initial deck for the game
     const deck = generateDeck([]);
@@ -79,4 +88,4 @@ const hearts = {
     });
   },
 };
-module.exports = hearts;
+module.exports = ohHell;
