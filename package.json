@@ -5,7 +5,7 @@
   "main": "main.js",
   "type": "commonjs",
   "scripts": {
-    "test": "node testing/hearts-tests.js",
+    "test": "node testing/oh-hell-tests.js",
     "start": "node ."
   },
   "repository": {

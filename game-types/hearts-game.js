@@ -68,23 +68,6 @@ class HeartsGame extends Game {
   }
 
   /**
-   * Add card to current trick and get next player
-   *
-   * @param {object} config configuration for player and card being played
-   * @param {Message} config.message message calling this function
-   * @param {Card} config.card Card to play
-   * @param {Player} config.player player playing the card
-   */
-  rotatePlay(config) {
-    config.message.reply(`${config.player.username} played \`${config.card.toString()}\``);
-    this.currentTrick.push({ card: config.card, player: config.player });
-    let nextPlayerIndex = this.players.findIndex((p) => p.userId === this.activePlayerId) + 1;
-    if (nextPlayerIndex === this.players.length) nextPlayerIndex = 0;
-    this.activePlayerId = this.players[nextPlayerIndex].userId;
-    this.activePlayerName = this.players[nextPlayerIndex].username;
-  }
-
-  /**
    * Handle ending of the game, if appropriate
    *
    * @param {object} config configuration for player and card being played

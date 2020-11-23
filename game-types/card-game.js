@@ -1,4 +1,4 @@
-const { User } = require('discord.js');
+const { User, Message } = require('discord.js');
 const Player = require('../util/card-player.js');
 const { Card, suits, values } = require('../util/card.js');
 const shuffle = require('../util/shuffle.js');
@@ -46,6 +46,23 @@ class CardGame {
       const playerHand = this.players.find((player) => player.userId === user.id).hand;
       user.send(`You Started a ${this.name} game!\nYour cards are: \n\`${playerHand.join(', ')}\``);
     });
+  }
+
+  /**
+   * Add card to current trick and get next player
+   *
+   * @param {object} config configuration for player and card being played
+   * @param {Message} config.message message calling this function
+   * @param {Card} config.card Card to play
+   * @param {Player} config.player player playing the card
+   */
+  rotatePlay(config) {
+    config.message.reply(`${config.player.username} played \`${config.card.toString()}\``);
+    this.currentTrick.push({ card: config.card, player: config.player });
+    let nextPlayerIndex = this.players.findIndex((p) => p.userId === this.activePlayerId) + 1;
+    if (nextPlayerIndex === this.players.length) nextPlayerIndex = 0;
+    this.activePlayerId = this.players[nextPlayerIndex].userId;
+    this.activePlayerName = this.players[nextPlayerIndex].username;
   }
 }
 module.exports = CardGame;

@@ -22,7 +22,7 @@ class OhHellGame extends Game {
    * @param {Card} config.card Card to play
    */
   playCard(config) {
-    console.log(`playing card for Oh Hell:${this.activePlayer}`);
+    console.log(`playing card for Oh Hell:${this.activePlayerName}`);
   }
 }
 module.exports = OhHellGame;
