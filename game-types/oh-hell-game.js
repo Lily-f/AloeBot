@@ -33,16 +33,15 @@ class OhHellGame extends Game {
     this.name = 'Oh Hell';
     this.trumps = '';
     this.stage = 'DESENDING';
+    this.bids = new Map();
+    this.players.forEach((player) => this.bids.set(player.userId, 0));
 
     // Deal out the starting cards
     let cardsPerPlayer;
-    if (this.players.length < 6) {
-      cardsPerPlayer = 10;
-    } else if (this.players.length === 6) {
-      cardsPerPlayer = 8;
-    } else if (this.players.length === 7) {
-      cardsPerPlayer = 7;
-    }
+    if (this.players.length < 6) cardsPerPlayer = 10;
+    else if (this.players.length === 6) cardsPerPlayer = 8;
+    else if (this.players.length === 7) cardsPerPlayer = 7;
+
     this.players.forEach((player) => {
       for (let i = 0; i < cardsPerPlayer; i += 1) {
         player.addCard(this.deck.pop());
@@ -73,20 +72,28 @@ class OhHellGame extends Game {
     }
 
     // Send message asking for bid. Add reaction collector
-    const bidMessage = await config.message.channel.send(`${this.activePlayerName} please react with your bid (0 - ${config.maxBid})`);
+    const bidMessage = await config.message.channel.send(`${this.activePlayerName} please use a number react with your bid (0 - ${config.maxBid})`);
     const reactionCollector = bidMessage.createReactionCollector(
       (reaction, user) => usedEmoji.includes(reaction.emoji.name)
        && user.id === this.activePlayerId, { time: 30000 },
     );
 
+    // When active player reacts with number, set it as their bid and close popup
     reactionCollector.on('collect', (reaction) => {
       if (usedEmoji.includes(reaction.emoji.name)) {
-        console.log(`reacted: ${reaction.emoji.name}`);
+        for (let i = 0; i <= config.maxBid; i += 1) {
+          if (possibleEmoji[i] === reaction.emoji.name) {
+            this.bids.set(this.activePlayerId, i);
+            break;
+          }
+        }
         reactionCollector.stop();
       }
     });
-    // Display embed of results when timeout occurs
+
+    // Delete bid message when bid gathered
     reactionCollector.on('end', () => {
+      config.message.channel.send(`${this.activePlayerName} bid ${this.bids.get(this.activePlayerId)}`);
       bidMessage.delete();
     });
   }
