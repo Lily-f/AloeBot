@@ -20,7 +20,7 @@ function readPlayers(config) {
     if (!players.includes(user) && !user.bot) players.push(user);
   });
 
-  // Check there are between 3 and 7 (inclusive) players for the game
+  // Check there are between the min and max (inclusive) players for the game
   if (players.length < config.minPlayers || players.length > config.maxPlayers) {
     config.message.reply(`${config.gamename} needs ${config.minPlayers}-${config.maxPlayers} players!
      "@" ${config.minPlayers - 1}-${config.maxPlayers - 1} other players for a game (no bots)`);

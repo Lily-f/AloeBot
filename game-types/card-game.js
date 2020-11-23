@@ -1,6 +1,6 @@
 const { User, Message } = require('discord.js');
 const Player = require('../util/card-player.js');
-const { Card, suits, values } = require('../util/card.js');
+const { Card } = require('../util/card.js');
 const shuffle = require('../util/shuffle.js');
 
 /**
@@ -22,18 +22,6 @@ class CardGame {
     this.activePlayerId = config.activePlayerId;
     this.activePlayerName = config.activePlayerName;
     this.name = '';
-
-    // Deal out cards and sort hands for readability
-    const cardsPerPlayer = this.deck.length / this.players.length;
-    this.players.forEach((player) => {
-      for (let i = 0; i < cardsPerPlayer; i += 1) {
-        player.addCard(this.deck.pop());
-      }
-      player.hand.sort((a, b) => {
-        if (a.suit === b.suit) return values.indexOf(b.value) - values.indexOf(a.value);
-        return suits.indexOf(a.suit) - suits.indexOf(b.suit);
-      });
-    });
   }
 
   /**
