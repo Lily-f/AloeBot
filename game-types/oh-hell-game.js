@@ -75,6 +75,22 @@ class OhHellGame extends Game {
     // Send message asking for bid. React with available options
     const bidMessage = await config.message.channel.send(`${this.activePlayerName} please react with your bid (0 - ${config.maxBid})`);
     usedEmoji.forEach((emoji) => { bidMessage.react(emoji); });
+
+    // When the active player reacts with their bid an it is one of the options, close the bid
+    const reactionCollector = bidMessage.createReactionCollector(
+      (reaction, user) => usedEmoji.includes(reaction.emoji.name)
+       && user.id === this.activePlayerId, { time: 30000 },
+    );
+    // Update frequencies of new reacts
+    reactionCollector.on('collect', (reaction) => {
+      if (usedEmoji.includes(reaction.emoji.name)) {
+        console.log(`reacted: ${reaction.emoji.name}`);
+      }
+    });
+    // Display embed of results when timeout occurs
+    reactionCollector.on('end', () => {
+      console.log('poll timed out');
+    });
   }
 
   /**
