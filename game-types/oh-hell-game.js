@@ -2,6 +2,7 @@ const { Message } = require('discord.js');
 const Game = require('./card-game.js');
 const { Card, suits, values } = require('../util/card.js');
 const shuffle = require('../util/shuffle.js');
+const BotConfig = require('../config.js');
 
 const STAGES = {
   ACENDING: 1,
@@ -24,6 +25,7 @@ class OhHellGame extends Game {
    * Creates a game with given players and deck. Deal out the deck to the players evenly
    *
    * @param {object} config configuration for the game
+   * @param {Message} config.message discord message
    */
   constructor(config) {
     super(config);
@@ -50,6 +52,29 @@ class OhHellGame extends Game {
         return suits.indexOf(a.suit) - suits.indexOf(b.suit);
       });
     });
+
+    this.getBid({ maxBid: cardsPerPlayer, message: config.message });
+  }
+
+  /**
+   *
+   * @param {object} config configuration for bidding
+   * @param {Message} config.message discord message
+   * @param {number} config.maxBid maximum bid a player can bid
+   */
+  async getBid(config) {
+    // Find valid unicode emoji for bid
+    const usedEmoji = [];
+    const possibleEmoji = Object.keys(BotConfig.unicodeEmoji).map(
+      (emoji) => BotConfig.unicodeEmoji[emoji],
+    );
+    for (let i = 0; i <= config.maxBid; i += 1) {
+      usedEmoji.push(possibleEmoji[i]);
+    }
+
+    // Send message asking for bid. React with available options
+    const bidMessage = await config.message.channel.send(`${this.activePlayerName} please react with your bid (0 - ${config.maxBid})`);
+    usedEmoji.forEach((emoji) => { bidMessage.react(emoji); });
   }
 
   /**

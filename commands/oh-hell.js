@@ -19,7 +19,7 @@ const ohHell = {
   execute(message) {
     // Read discord users (players) from command
     const players = readPlayers({
-      message, minPlayers: 2, maxPlayers: 7, gamename: 'Oh Hell',
+      message, minPlayers: 1, maxPlayers: 7, gamename: 'Oh Hell',
     });
     if (!players) return;
 
@@ -37,6 +37,7 @@ const ohHell = {
       deck,
       activePlayerId: startPlayer.id,
       activePlayerName: startPlayer.username,
+      message,
     });
     makeGame({ message, game, gamename: 'Oh Hell' });
     game.displayCards(players);

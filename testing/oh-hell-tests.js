@@ -15,6 +15,7 @@ const players = [
   new Player({ username: 'playerThree', userId: '3' }),
 ];
 const startPlayer = players[0];
+const proxyMessage = new ProxyMessage();
 
 // Create game
 const gameConfig = {
@@ -22,9 +23,9 @@ const gameConfig = {
   deck,
   activePlayerId: startPlayer.userId,
   activePlayerName: startPlayer.username,
+  message: proxyMessage,
 };
 const game = new OhHellGame(gameConfig);
-const proxyMessage = new ProxyMessage();
 
 // Play a trick
 for (let i = 0; i < 6; i += 1) {
