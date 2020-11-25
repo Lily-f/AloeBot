@@ -52,7 +52,28 @@ class OhHellGame extends Game {
       });
     });
 
-    this.getBid({ maxBid: cardsPerPlayer, message: config.message });
+    this.getBid({
+      maxBid: cardsPerPlayer,
+      message: config.message,
+      playerId: this.players[0].userId,
+      playerName: this.players[0].username,
+    });
+  }
+
+  /**
+   * Gets all bids for a given game round
+   *
+   * @param {object} config configuration for getting all bids this round
+   * @param {Message} config.message discord message
+   * @param {number} config.maxBid maximum bid a player can bid
+   */
+  async getRoundBids(config) {
+    const bids = [];
+    for (let i = 0; i < this.players.length; i += 1) {
+      bids.push(this.getBid(config));
+    }
+
+    await Promise.all(bids);
   }
 
   /**
@@ -60,8 +81,13 @@ class OhHellGame extends Game {
    * @param {object} config configuration for bidding
    * @param {Message} config.message discord message
    * @param {number} config.maxBid maximum bid a player can bid
+   * @param {string} config.playerId ID of the player to get the bid from
+   * @param {string} config.playerName Name of the player to get the bid from
    */
   async getBid(config) {
+    // Set a default bid value of 0
+    this.bids.set(config.playerId, 0);
+
     // Find valid unicode emoji for bid
     const usedEmoji = [];
     const possibleEmoji = Object.keys(BotConfig.unicodeEmoji).map(
@@ -72,10 +98,10 @@ class OhHellGame extends Game {
     }
 
     // Send message asking for bid. Add reaction collector
-    const bidMessage = await config.message.channel.send(`${this.activePlayerName} please use a number react with your bid (0 - ${config.maxBid})`);
+    const bidMessage = await config.message.channel.send(`${config.playerName} please use a number react with your bid (0 - ${config.maxBid})`);
     const reactionCollector = bidMessage.createReactionCollector(
       (reaction, user) => usedEmoji.includes(reaction.emoji.name)
-       && user.id === this.activePlayerId, { time: 30000 },
+       && user.id === config.playerId, { time: 10000 },
     );
 
     // When active player reacts with number, set it as their bid and close popup
@@ -83,7 +109,7 @@ class OhHellGame extends Game {
       if (usedEmoji.includes(reaction.emoji.name)) {
         for (let i = 0; i <= config.maxBid; i += 1) {
           if (possibleEmoji[i] === reaction.emoji.name) {
-            this.bids.set(this.activePlayerId, i);
+            this.bids.set(config.playerId, i);
             break;
           }
         }
@@ -93,7 +119,7 @@ class OhHellGame extends Game {
 
     // Delete bid message when bid gathered
     reactionCollector.on('end', () => {
-      config.message.channel.send(`${this.activePlayerName} bid ${this.bids.get(this.activePlayerId)}`);
+      config.message.channel.send(`${config.playerName} bid ${this.bids.get(config.playerId)}`);
       bidMessage.delete();
     });
   }
