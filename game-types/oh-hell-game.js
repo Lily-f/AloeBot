@@ -19,6 +19,8 @@ const CARDS_ON_SIZE = {
 };
 Object.freeze(CARDS_ON_SIZE);
 
+const BID_TIMEOUT = 10000;
+
 class OhHellGame extends Game {
   /**
    * Creates a game with given players and deck. Deal out the deck to the players evenly
@@ -78,6 +80,9 @@ class OhHellGame extends Game {
         playerName: this.players[i].username,
         forbiddenBid,
       });
+
+      // eslint-disable-next-line no-await-in-loop
+      await new Promise((r) => setTimeout(r, BID_TIMEOUT));
       bidsSum += this.bids.get(this.players[i].userId);
     }
   }
@@ -92,8 +97,7 @@ class OhHellGame extends Game {
    * @param {number} config.forbiddenBid Number that the player is not allowed to bid TODO: add
    */
   async getBid(config) {
-    // Set a default bid value of 0
-    this.bids.set(config.playerId, 0);
+    this.bids.set(config.playerId, -1);
 
     // Find valid unicode emoji for bid
     const usedEmoji = [];
@@ -109,7 +113,7 @@ class OhHellGame extends Game {
     const bidMessage = await config.message.channel.send(`${config.playerName} please use a number react with your bid (0 - ${config.maxBid}). ${forbiddenBidMessage}`);
     const reactionCollector = bidMessage.createReactionCollector(
       (reaction, user) => usedEmoji.includes(reaction.emoji.name)
-       && user.id === config.playerId, { time: 10000 },
+       && user.id === config.playerId, { time: BID_TIMEOUT },
     );
 
     // When active player reacts with number, set it as their bid and close popup
@@ -127,6 +131,10 @@ class OhHellGame extends Game {
 
     // Delete bid message when bid gathered
     reactionCollector.on('end', () => {
+      if (this.bids.get(config.playerId) === -1) {
+        if (config.forbiddenBid === 0) this.bids.set(config.playerId, 1);
+        else this.bids.set(config.playerId, 0);
+      }
       config.message.channel.send(`${config.playerName} bid ${this.bids.get(config.playerId)}`);
       bidMessage.delete();
     });
