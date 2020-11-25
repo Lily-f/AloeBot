@@ -40,7 +40,7 @@ const ohHell = {
       message,
     });
     makeGame({ message, game, gamename: 'Oh Hell' });
-    game.displayCards(players);
+    // game.displayCards(players);
   },
 };
 module.exports = ohHell;

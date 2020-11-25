@@ -1,7 +1,6 @@
 const { Message } = require('discord.js');
 const Game = require('./card-game.js');
 const { Card, suits, values } = require('../util/card.js');
-const shuffle = require('../util/shuffle.js');
 const BotConfig = require('../config.js');
 
 const STAGES = {
@@ -52,12 +51,7 @@ class OhHellGame extends Game {
       });
     });
 
-    this.getBid({
-      maxBid: cardsPerPlayer,
-      message: config.message,
-      playerId: this.players[0].userId,
-      playerName: this.players[0].username,
-    });
+    this.getRoundBids({ maxBid: cardsPerPlayer, message: config.message });
   }
 
   /**
@@ -68,12 +62,24 @@ class OhHellGame extends Game {
    * @param {number} config.maxBid maximum bid a player can bid
    */
   async getRoundBids(config) {
-    const bids = [];
+    let bidsSum = 0;
     for (let i = 0; i < this.players.length; i += 1) {
-      bids.push(this.getBid(config));
-    }
+      // last bid cannot be such that lastBid + bidsSum = maxBid
+      let forbiddenBid = -1;
+      if (i === this.players.length - 1) {
+        forbiddenBid = config.maxBid - bidsSum;
+      }
 
-    await Promise.all(bids);
+      // eslint-disable-next-line no-await-in-loop
+      await this.getBid({
+        message: config.message,
+        maxBid: config.maxBid,
+        playerId: this.players[i].userId,
+        playerName: this.players[i].username,
+        forbiddenBid,
+      });
+      bidsSum += this.bids.get(this.players[i].userId);
+    }
   }
 
   /**
@@ -83,6 +89,7 @@ class OhHellGame extends Game {
    * @param {number} config.maxBid maximum bid a player can bid
    * @param {string} config.playerId ID of the player to get the bid from
    * @param {string} config.playerName Name of the player to get the bid from
+   * @param {number} config.forbiddenBid Number that the player is not allowed to bid TODO: add
    */
   async getBid(config) {
     // Set a default bid value of 0
@@ -98,7 +105,8 @@ class OhHellGame extends Game {
     }
 
     // Send message asking for bid. Add reaction collector
-    const bidMessage = await config.message.channel.send(`${config.playerName} please use a number react with your bid (0 - ${config.maxBid})`);
+    const forbiddenBidMessage = config.forbiddenBid >= 0 ? `You cannot bid ${config.forbiddenBid}` : '';
+    const bidMessage = await config.message.channel.send(`${config.playerName} please use a number react with your bid (0 - ${config.maxBid}). ${forbiddenBidMessage}`);
     const reactionCollector = bidMessage.createReactionCollector(
       (reaction, user) => usedEmoji.includes(reaction.emoji.name)
        && user.id === config.playerId, { time: 10000 },

@@ -17,7 +17,7 @@ function readPlayers(config) {
   const players = [];
   players.push(config.message.author);
   config.message.mentions.users.forEach((user) => {
-    if (!players.includes(user) && !user.bot) players.push(user);
+    if (!players.includes(user) /* && !user.bot */) players.push(user);
   });
 
   // Check there are between the min and max (inclusive) players for the game
