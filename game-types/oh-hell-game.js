@@ -94,7 +94,7 @@ class OhHellGame extends Game {
    * @param {number} config.maxBid maximum bid a player can bid
    * @param {string} config.playerId ID of the player to get the bid from
    * @param {string} config.playerName Name of the player to get the bid from
-   * @param {number} config.forbiddenBid Number that the player is not allowed to bid TODO: add
+   * @param {number} config.forbiddenBid Number that the player is not allowed to bid
    */
   async getBid(config) {
     this.bids.set(config.playerId, -1);

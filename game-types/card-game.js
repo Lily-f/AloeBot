@@ -11,16 +11,14 @@ class CardGame {
    * Creates a game with given players and deck. Deal out the deck to the players evenly
    *
    * @param {object} config configuration for the game
-   * @param {Player[]} config.players players in teh game
+   * @param {Player[]} config.players players in the game
    * @param {Card[]} config.deck deck of cards in the game
-   * @param {string} config.activePlayerId active player's ID
-   * @param {string} config.activePlayerName active player's Name
    */
   constructor(config) {
     this.deck = shuffle(config.deck);
-    this.players = config.players;
-    this.activePlayerId = config.activePlayerId;
-    this.activePlayerName = config.activePlayerName;
+    this.players = shuffle(config.players);
+    this.activePlayerId = this.players[0].userId;
+    this.activePlayerName = this.players[0].username;
     this.name = '';
   }
 

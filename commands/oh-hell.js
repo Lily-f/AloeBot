@@ -31,12 +31,9 @@ const ohHell = {
     const deck = generateDeck([]);
 
     // Create the game and tell users how to play
-    const startPlayer = players[Math.floor(Math.random() * players.length)];
     const game = new OhHellGame({
       players: Array.from(gamePlayers.values()),
       deck,
-      activePlayerId: startPlayer.id,
-      activePlayerName: startPlayer.username,
       message,
     });
     makeGame({ message, game, gamename: 'Oh Hell' });
