@@ -1,5 +1,5 @@
 const { Message } = require('discord.js');
-const OhHellGame = require('../game-types/oh-hell-game.js');
+const { OhHellGame, getStartCardsCount } = require('../game-types/oh-hell-game.js');
 const { generateDeck } = require('../util/card.js');
 const { checkValidPlayers, readPlayers, makeGame } = require('../util/game-creation.js');
 
@@ -31,13 +31,17 @@ const ohHell = {
     const deck = generateDeck([]);
 
     // Create the game and tell users how to play
+    const startCardsPerPlayer = getStartCardsCount(gamePlayers.size);
     const game = new OhHellGame({
       players: Array.from(gamePlayers.values()),
       deck,
       message,
+      startCardsPerPlayer,
     });
+
     makeGame({ message, game, gamename: 'Oh Hell' });
     // game.displayCards(players);
+    game.getRoundBids({ maxBid: startCardsPerPlayer, message });
   },
 };
 module.exports = ohHell;

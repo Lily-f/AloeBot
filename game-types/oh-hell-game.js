@@ -21,12 +21,26 @@ Object.freeze(CARDS_ON_SIZE);
 
 const BID_TIMEOUT = 10000;
 
+/**
+ * Get number of start cards based on number of players
+ *
+ * @param {number} playerCount number of players
+ * @returns {number} number of cards per player for round 1
+ */
+function getStartCardsCount(playerCount) {
+  if (playerCount < 6) return 10;
+  if (playerCount === 6) return 8;
+  if (playerCount === 7) return 7;
+  return 0;
+}
+
 class OhHellGame extends Game {
   /**
    * Creates a game with given players and deck. Deal out the deck to the players evenly
    *
    * @param {object} config configuration for the game
    * @param {Message} config.message discord message
+   * @param {number} config.startCardsPerPlayer Number of cards per player in round 1
    */
   constructor(config) {
     super(config);
@@ -38,13 +52,8 @@ class OhHellGame extends Game {
     this.players.forEach((player) => this.bids.set(player.userId, 0));
 
     // Deal out the starting cards
-    let cardsPerPlayer;
-    if (this.players.length < 6) cardsPerPlayer = 10;
-    else if (this.players.length === 6) cardsPerPlayer = 8;
-    else if (this.players.length === 7) cardsPerPlayer = 7;
-
     this.players.forEach((player) => {
-      for (let i = 0; i < cardsPerPlayer; i += 1) {
+      for (let i = 0; i < config.startCardsPerPlayer; i += 1) {
         player.addCard(this.deck.pop());
       }
       player.hand.sort((a, b) => {
@@ -52,8 +61,6 @@ class OhHellGame extends Game {
         return suits.indexOf(a.suit) - suits.indexOf(b.suit);
       });
     });
-
-    this.getRoundBids({ maxBid: cardsPerPlayer, message: config.message });
   }
 
   /**
@@ -172,4 +179,4 @@ class OhHellGame extends Game {
     return true;
   }
 }
-module.exports = OhHellGame;
+module.exports = { OhHellGame, getStartCardsCount };
