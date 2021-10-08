@@ -12,7 +12,7 @@ const hearts = {
   guildOnly: true,
   cooldown: 5,
   /**
-   * Create poll command
+   * Start Hearts game command
    *
    * @param {Message} message  user invocation message
    */
