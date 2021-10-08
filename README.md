@@ -1,7 +1,7 @@
 # AloeBot
 A Discord bot that provides features to discord servers such as card games and polling.
 
-to run the commands use '^ [command name]' in a direct message to AloeBot or as a message in a server channel that has AloeBot. 
+to run the commands use '^ [command name]' in a direct message to AloeBot or as a message in a server channel that has AloeBot. Some commands will require more information to work. For example a poll command will also need what the different options are. use '^ help [command name]' to see how to use each command. 
 
 ### Commands
 #### Help
